@@ -1,0 +1,718 @@
+{
+  "updatedAt": "2026-04-06T23:54:40.716Z",
+  "products": [
+    {
+      "id": 1,
+      "name": "Cadeira de Madeira Maciça",
+      "description": "Cadeira rústica em madeira maciça, ideal para casamentos e eventos rurais.",
+      "price": 15,
+      "stock": 239,
+      "bulkDiscount": {
+        "quantity": 200,
+        "price": 14
+      },
+      "image": "fas fa-chair",
+      "category": "Cadeiras",
+      "imageUrl": "/uploads/4cb0680f0f07100b41ff.webp"
+    },
+    {
+      "id": 2,
+      "name": "Mesa Redonda 1,5m",
+      "description": "Mesa redonda para 8 pessoas, estrutura em metal e tampo de MDF.",
+      "price": 120,
+      "stock": 30,
+      "bulkDiscount": {
+        "quantity": 10,
+        "price": 110
+      },
+      "image": "fas fa-table",
+      "category": "Mesas"
+    },
+    {
+      "id": 3,
+      "name": "Puff de Couro Sintético",
+      "description": "Puff moderno em couro sintético, disponível em várias cores.",
+      "price": 45,
+      "stock": 100,
+      "bulkDiscount": null,
+      "image": "fas fa-couch",
+      "category": "Assentos"
+    },
+    {
+      "id": 4,
+      "name": "Biombo Decorativo",
+      "description": "Biombo em madeira com detalhes em tecido para divisórias.",
+      "price": 180,
+      "stock": 20,
+      "bulkDiscount": null,
+      "image": "fas fa-border-none",
+      "category": "Decoração"
+    },
+    {
+      "id": 5,
+      "name": "Cadeira Dobrável Plástico",
+      "description": "Cadeira dobrável em plástico resistente, fácil transporte e armazenamento.",
+      "price": 12,
+      "stock": 300,
+      "bulkDiscount": {
+        "quantity": 100,
+        "price": 10.5
+      },
+      "image": "fas fa-chair",
+      "category": "Cadeiras"
+    },
+    {
+      "id": 6,
+      "name": "Mesa Retangular 2m",
+      "description": "Mesa retangular para banquetes e eventos corporativos.",
+      "price": 150,
+      "stock": 30,
+      "bulkDiscount": {
+        "quantity": 5,
+        "price": 140
+      },
+      "image": "fas fa-table",
+      "category": "Mesas"
+    },
+    {
+      "id": 7,
+      "name": "Sofá de Canto",
+      "description": "Sofá de canto em tecido resistente, ideal para área de descanso.",
+      "price": 350,
+      "stock": 9,
+      "bulkDiscount": null,
+      "image": "fas fa-couch",
+      "category": "Assentos"
+    },
+    {
+      "id": 8,
+      "name": "Barril de Cerveja Decorativo",
+      "description": "Barril decorativo para servir drinks ou como elemento cenográfico.",
+      "price": 220,
+      "stock": 15,
+      "bulkDiscount": null,
+      "image": "fas fa-wine-bottle",
+      "category": "Decoração"
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "email": "mobiliermobiliario@gmail.com",
+      "password": "admin20262026",
+      "name": "Administrador",
+      "isAdmin": true,
+      "createdAt": "2026-04-03T01:39:02.613Z"
+    },
+    {
+      "id": 2,
+      "name": "GABRIELLY DE QUEIROZ PEREIRA",
+      "email": "gabriellyp@alunos.utfpr.edu.br",
+      "phone": "(15) 98804-7380",
+      "cpf": "473.545.028-98",
+      "cep": "84040-000",
+      "street": "Rua Balduíno Taques",
+      "number": "50",
+      "complement": "",
+      "neighborhood": "Estrela",
+      "cityState": "Ponta Grossa / PR",
+      "address": "Rua Balduíno Taques, n. 50, Estrela, Ponta Grossa / PR",
+      "password": "gaby2412",
+      "notes": "",
+      "isAdmin": false,
+      "createdAt": "2026-04-03T20:36:23.892Z"
+    },
+    {
+      "id": 1775254817318,
+      "name": "Adriana Aparecida Guimarães",
+      "email": "adriana@utfpr.edu.br",
+      "phone": "42999926060",
+      "address": "Rua Balduino Taques 503",
+      "cpf": "91957362987",
+      "notes": "",
+      "password": "cliente123",
+      "isAdmin": false,
+      "createdAt": "2026-04-03T22:20:16.992Z"
+    },
+    {
+      "id": 1775254817319,
+      "name": "Julia",
+      "email": "gqpereira@uepg.br",
+      "phone": "15988047380",
+      "password": "1234",
+      "address": "3",
+      "isAdmin": false,
+      "createdAt": "2026-04-06T17:53:09.300Z",
+      "updatedAt": "2026-04-06T17:53:09.300Z"
+    }
+  ],
+  "savedBudgets": [
+    {
+      "id": 1775272432139,
+      "userId": 2,
+      "userName": "GABRIELLY DE QUEIROZ PEREIRA",
+      "userEmail": "gabriellyp@alunos.utfpr.edu.br",
+      "userPhone": "(15) 98804-7380",
+      "date": "04/04/2026",
+      "createdAt": "2026-04-04T03:13:52.139Z",
+      "updatedAt": "2026-04-04T03:51:49.703Z",
+      "items": [
+        {
+          "id": 1,
+          "name": "Cadeira de Madeira Maciça",
+          "quantity": 12,
+          "price": 15,
+          "total": 180
+        },
+        {
+          "id": 5,
+          "name": "Cadeira Dobrável Plástico",
+          "quantity": 1,
+          "price": 12,
+          "total": 12
+        }
+      ],
+      "subtotal": 192,
+      "freight": 80,
+      "total": 272,
+      "cep": "84050-000",
+      "city": "Ponta Grossa",
+      "state": "PR",
+      "status": "Cancelado",
+      "eventDetails": {
+        "type": "Casamento",
+        "guests": 100,
+        "date": "2025-04-20",
+        "city": "curitiba",
+        "venueType": "Interno",
+        "notes": "",
+        "eventName": "Casamento ana",
+        "deliveryDate": "2025-04-20",
+        "deliveryTime": "10:00",
+        "responsible": "ana",
+        "responsiblePhone": "15988047380",
+        "deliveryAddress": "Rua Joaquim de Paula Xavier, 500, apto12, Estrela, Ponta Grossa / PR"
+      },
+      "notes": "",
+      "inventoryCommitted": false,
+      "origin": "site-user"
+    },
+    {
+      "id": 1775254816993,
+      "userId": 1775254817318,
+      "userName": "Adriana Aparecida Guimarães",
+      "userEmail": "adriana@utfpr.edu.br",
+      "userPhone": "42999926060",
+      "date": "03/04/2026",
+      "createdAt": "2026-04-03T22:20:16.993Z",
+      "updatedAt": "2026-04-03T22:21:03.431Z",
+      "items": [
+        {
+          "id": 1,
+          "name": "Cadeira de Madeira Maciça",
+          "quantity": 10,
+          "price": 15,
+          "total": 150
+        },
+        {
+          "id": 2,
+          "name": "Mesa Redonda 1,5m",
+          "quantity": 20,
+          "price": 120,
+          "total": 2400
+        }
+      ],
+      "subtotal": 2550,
+      "freight": 0,
+      "total": 2550,
+      "cep": "",
+      "city": "Ponta Grossa",
+      "state": "",
+      "status": "Aprovado",
+      "eventDetails": {
+        "eventName": "aniversario adri",
+        "type": "aniversario",
+        "date": "2026-04-24",
+        "guests": 100,
+        "city": "Ponta Grossa",
+        "venueType": "interno",
+        "deliveryDate": "2026-04-20",
+        "deliveryTime": "10:00",
+        "returnDate": "2026-04-20",
+        "returnTime": "10:00",
+        "responsible": "adriana",
+        "responsiblePhone": "4299926060",
+        "deliveryAddress": "rua casa",
+        "notes": ""
+      },
+      "notes": "",
+      "inventoryCommitted": true,
+      "origin": "admin-direct-sale"
+    },
+    {
+      "id": 1775251039278,
+      "userId": 2,
+      "userName": "GABRIELLY DE QUEIROZ PEREIRA",
+      "userEmail": "gabriellyp@alunos.utfpr.edu.br",
+      "userPhone": "(15) 98804-7380",
+      "date": "03/04/2026",
+      "createdAt": "2026-04-03T21:17:19.283Z",
+      "updatedAt": "2026-04-03T21:50:37.967Z",
+      "items": [
+        {
+          "id": 7,
+          "name": "Sofá de Canto",
+          "quantity": 1,
+          "price": 350,
+          "total": 350
+        },
+        {
+          "id": 1,
+          "name": "Cadeira de Madeira Maciça",
+          "quantity": 1,
+          "price": 15,
+          "total": 15
+        }
+      ],
+      "subtotal": 365,
+      "freight": 80,
+      "total": 445,
+      "cep": "84040-000",
+      "city": "Ponta Grossa",
+      "state": "PR",
+      "status": "Finalizado",
+      "eventDetails": {
+        "type": "Casamento",
+        "guests": 100,
+        "date": "2026-10-20",
+        "city": "Ponta Grossa",
+        "venueType": "Interno",
+        "notes": "",
+        "eventName": "Casamento ana",
+        "deliveryDate": "2026-10-20",
+        "deliveryTime": "10:00",
+        "responsible": "ana",
+        "responsiblePhone": "15988047380",
+        "deliveryAddress": "Rua Balduíno Taques, 503, Estrela, Ponta Grossa / PR"
+      },
+      "notes": "",
+      "inventoryCommitted": true,
+      "origin": "site-user"
+    }
+  ],
+  "companyData": {
+    "name": "Mobilier - Mobiliário para Eventos",
+    "instagram": "@mobilier_mobiliario",
+    "phone": "(41) 99999-9999",
+    "email": "contato@mobilier.com.br",
+    "deliveryStates": [
+      "PR",
+      "SC"
+    ]
+  },
+  "stockMovements": [
+    {
+      "id": 1775274710007,
+      "productId": 5,
+      "productName": "Cadeira Dobrável Plástico",
+      "type": "entrada",
+      "quantity": 1,
+      "reason": "Estorno do orcamento #1775272432139",
+      "date": "2026-04-04T03:51:49.703Z",
+      "resultingStock": 300
+    },
+    {
+      "id": 1775274710659,
+      "productId": 1,
+      "productName": "Cadeira de Madeira Maciça",
+      "type": "entrada",
+      "quantity": 12,
+      "reason": "Estorno do orcamento #1775272432139",
+      "date": "2026-04-04T03:51:49.703Z",
+      "resultingStock": 239
+    },
+    {
+      "id": 1775272563685,
+      "productId": 5,
+      "productName": "Cadeira Dobrável Plástico",
+      "type": "saida",
+      "quantity": 1,
+      "reason": "Reserva do orcamento #1775272432139",
+      "date": "2026-04-04T03:16:02.734Z",
+      "resultingStock": 299
+    },
+    {
+      "id": 1775272563660,
+      "productId": 1,
+      "productName": "Cadeira de Madeira Maciça",
+      "type": "saida",
+      "quantity": 12,
+      "reason": "Reserva do orcamento #1775272432139",
+      "date": "2026-04-04T03:16:02.734Z",
+      "resultingStock": 227
+    },
+    {
+      "id": 1775254863772,
+      "productId": 2,
+      "productName": "Mesa Redonda 1,5m",
+      "type": "saida",
+      "quantity": 20,
+      "reason": "Reserva do orcamento #1775254816993",
+      "date": "2026-04-03T22:21:03.431Z",
+      "resultingStock": 30
+    },
+    {
+      "id": 1775254864115,
+      "productId": 1,
+      "productName": "Cadeira de Madeira Maciça",
+      "type": "saida",
+      "quantity": 10,
+      "reason": "Reserva do orcamento #1775254816993",
+      "date": "2026-04-03T22:21:03.431Z",
+      "resultingStock": 239
+    },
+    {
+      "id": 1775253038305,
+      "productId": 1,
+      "productName": "Cadeira de Madeira Maciça",
+      "type": "saida",
+      "quantity": 1,
+      "reason": "Reserva do orcamento #1775251039278",
+      "date": "2026-04-03T21:50:37.967Z",
+      "resultingStock": 249
+    },
+    {
+      "id": 1775253038158,
+      "productId": 7,
+      "productName": "Sofá de Canto",
+      "type": "saida",
+      "quantity": 1,
+      "reason": "Reserva do orcamento #1775251039278",
+      "date": "2026-04-03T21:50:37.967Z",
+      "resultingStock": 9
+    },
+    {
+      "id": 1775253025573,
+      "productId": 1,
+      "productName": "Cadeira de Madeira Maciça",
+      "type": "entrada",
+      "quantity": 1,
+      "reason": "Estorno do orcamento #1775251039278",
+      "date": "2026-04-03T21:50:25.208Z",
+      "resultingStock": 250
+    },
+    {
+      "id": 1775253026006,
+      "productId": 7,
+      "productName": "Sofá de Canto",
+      "type": "entrada",
+      "quantity": 1,
+      "reason": "Estorno do orcamento #1775251039278",
+      "date": "2026-04-03T21:50:25.208Z",
+      "resultingStock": 10
+    },
+    {
+      "id": 1775253008955,
+      "productId": 1,
+      "productName": "Cadeira de Madeira Maciça",
+      "type": "saida",
+      "quantity": 1,
+      "reason": "Reserva do orcamento #1775251039278",
+      "date": "2026-04-03T21:50:08.915Z",
+      "resultingStock": 249
+    },
+    {
+      "id": 1775253009628,
+      "productId": 7,
+      "productName": "Sofá de Canto",
+      "type": "saida",
+      "quantity": 1,
+      "reason": "Reserva do orcamento #1775251039278",
+      "date": "2026-04-03T21:50:08.915Z",
+      "resultingStock": 9
+    }
+  ],
+  "financialEntries": [
+    {
+      "id": 1775272432186,
+      "budgetId": 1775272432139,
+      "customerName": "GABRIELLY DE QUEIROZ PEREIRA",
+      "description": "Casamento - Orcamento #1775272432139",
+      "amount": 272,
+      "kind": "Receita",
+      "category": "Locacao de mobiliario",
+      "dueDate": "2025-04-20",
+      "status": "Cancelado",
+      "createdAt": "2026-04-04T03:13:52.139Z"
+    },
+    {
+      "id": 1775271632398,
+      "budgetId": null,
+      "customerName": "",
+      "description": "transporte",
+      "amount": 50,
+      "kind": "Despesa",
+      "category": "Transporte",
+      "dueDate": "2026-05-05",
+      "status": "Recebido",
+      "createdAt": "2026-04-04T03:00:32.398Z"
+    },
+    {
+      "id": 1775254817119,
+      "budgetId": 1775254816993,
+      "customerName": "Adriana Aparecida Guimarães",
+      "description": "aniversario - Orcamento #1775254816993",
+      "amount": 2550,
+      "kind": "Receita",
+      "category": "Locacao de mobiliario",
+      "dueDate": "2026-04-24",
+      "status": "A receber",
+      "createdAt": "2026-04-03T22:20:16.993Z"
+    },
+    {
+      "id": 1775251039303,
+      "budgetId": 1775251039278,
+      "customerName": "GABRIELLY DE QUEIROZ PEREIRA",
+      "description": "Casamento - Orcamento #1775251039278",
+      "amount": 445,
+      "kind": "Receita",
+      "category": "Locacao de mobiliario",
+      "dueDate": "2026-10-20",
+      "status": "Recebido",
+      "createdAt": "2026-04-03T21:17:19.283Z"
+    }
+  ],
+  "accessHistory": [
+    {
+      "id": 1775272940304,
+      "userId": null,
+      "userName": "Visitante",
+      "startedAt": "2026-04-04T03:22:20.304Z",
+      "lastActivityAt": "2026-04-04T03:23:23.187Z",
+      "productClicks": [],
+      "actions": [
+        {
+          "type": "ui_click",
+          "details": {
+            "text": "Estoque"
+          },
+          "at": "2026-04-04T03:22:48.328Z"
+        },
+        {
+          "type": "ui_click",
+          "details": {
+            "text": "Estoque"
+          },
+          "at": "2026-04-04T03:22:51.583Z"
+        },
+        {
+          "type": "ui_click",
+          "details": {
+            "text": "Pedidos"
+          },
+          "at": "2026-04-04T03:22:52.293Z"
+        },
+        {
+          "type": "ui_click",
+          "details": {
+            "text": "Financeiro"
+          },
+          "at": "2026-04-04T03:22:57.773Z"
+        },
+        {
+          "type": "ui_click",
+          "details": {
+            "text": "Nova venda"
+          },
+          "at": "2026-04-04T03:23:01.361Z"
+        },
+        {
+          "type": "ui_click",
+          "details": {
+            "text": "Logistica"
+          },
+          "at": "2026-04-04T03:23:03.573Z"
+        },
+        {
+          "type": "ui_click",
+          "details": {
+            "text": "20\n                        \n                            10:00 • aniversario adri"
+          },
+          "at": "2026-04-04T03:23:07.421Z"
+        },
+        {
+          "type": "ui_click",
+          "details": {
+            "text": ""
+          },
+          "at": "2026-04-04T03:23:12.123Z"
+        },
+        {
+          "type": "ui_click",
+          "details": {
+            "text": ""
+          },
+          "at": "2026-04-04T03:23:12.872Z"
+        },
+        {
+          "type": "ui_click",
+          "details": {
+            "text": ""
+          },
+          "at": "2026-04-04T03:23:13.369Z"
+        },
+        {
+          "type": "ui_click",
+          "details": {
+            "text": ""
+          },
+          "at": "2026-04-04T03:23:13.861Z"
+        },
+        {
+          "type": "ui_click",
+          "details": {
+            "text": ""
+          },
+          "at": "2026-04-04T03:23:14.303Z"
+        },
+        {
+          "type": "ui_click",
+          "details": {
+            "text": ""
+          },
+          "at": "2026-04-04T03:23:14.852Z"
+        },
+        {
+          "type": "ui_click",
+          "details": {
+            "text": "Ver pedido"
+          },
+          "at": "2026-04-04T03:23:18.325Z"
+        },
+        {
+          "type": "ui_click",
+          "details": {
+            "text": "Pedidos"
+          },
+          "at": "2026-04-04T03:23:23.187Z"
+        }
+      ],
+      "converted": false
+    },
+    {
+      "id": 1775248563175,
+      "userId": null,
+      "userName": "Visitante",
+      "startedAt": "2026-04-03T20:36:03.175Z",
+      "lastActivityAt": "2026-04-03T20:36:23.913Z",
+      "productClicks": [],
+      "actions": [
+        {
+          "type": "ui_click",
+          "details": {
+            "text": "Cadastrar"
+          },
+          "at": "2026-04-03T20:36:05.703Z"
+        },
+        {
+          "type": "ui_click",
+          "details": {
+            "text": "Salvar cadastro"
+          },
+          "at": "2026-04-03T20:36:23.913Z"
+        }
+      ],
+      "converted": false
+    },
+    {
+      "id": 1775180342616,
+      "userId": null,
+      "userName": "Visitante",
+      "startedAt": "2026-04-03T01:39:02.616Z",
+      "lastActivityAt": "2026-04-03T01:39:02.620Z",
+      "productClicks": [],
+      "actions": [
+        {
+          "type": "page_loaded",
+          "details": {},
+          "at": "2026-04-03T01:39:02.620Z"
+        }
+      ],
+      "converted": false
+    }
+  ],
+  "leadContacts": [],
+  "logisticsEntries": [
+    {
+      "id": 1775272433011,
+      "createdAt": "2026-04-04T03:13:52.141Z",
+      "budgetId": 1775272432139,
+      "eventName": "Casamento ana",
+      "clientName": "GABRIELLY DE QUEIROZ PEREIRA",
+      "contactName": "ana",
+      "contactPhone": "15988047380",
+      "receiverName": "ana",
+      "receiverPhone": "15988047380",
+      "owner": "ana",
+      "date": "2025-04-20",
+      "time": "10:00",
+      "location": "Rua Joaquim de Paula Xavier, 500, apto12, Estrela, Ponta Grossa / PR",
+      "notes": "",
+      "status": "Cancelado",
+      "updatedAt": "2026-04-04T03:51:49.706Z"
+    },
+    {
+      "id": 1775254864395,
+      "createdAt": "2026-04-03T22:21:03.431Z",
+      "budgetId": 1775254816993,
+      "eventName": "aniversario adri",
+      "clientName": "Adriana Aparecida Guimarães",
+      "contactName": "adriana",
+      "contactPhone": "4299926060",
+      "receiverName": "adriana",
+      "receiverPhone": "4299926060",
+      "owner": "adriana",
+      "date": "2026-04-20",
+      "time": "10:00",
+      "location": "rua casa",
+      "notes": "",
+      "status": "Confirmado",
+      "updatedAt": "2026-04-03T22:21:03.431Z"
+    },
+    {
+      "id": 1775329688840,
+      "eventName": "casamento joao",
+      "responsible": "pedro",
+      "owner": "pedro",
+      "date": "2026-04-20",
+      "time": "18:00",
+      "status": "Confirmado",
+      "contactName": "Rua Taques",
+      "receiverName": "Rua Taques",
+      "contactPhone": "15988047380",
+      "receiverPhone": "15988047380",
+      "location": "salao",
+      "notes": "",
+      "createdAt": "2026-04-04T19:08:08.840Z",
+      "updatedAt": "2026-04-04T19:08:08.840Z"
+    },
+    {
+      "id": 1775251040237,
+      "createdAt": "2026-04-03T21:17:19.284Z",
+      "budgetId": 1775251039278,
+      "eventName": "Casamento ana",
+      "clientName": "GABRIELLY DE QUEIROZ PEREIRA",
+      "contactName": "ana",
+      "contactPhone": "15988047380",
+      "receiverName": "ana",
+      "receiverPhone": "15988047380",
+      "owner": "ana",
+      "date": "2026-10-20",
+      "time": "10:00",
+      "location": "Rua Balduíno Taques, 503, Estrela, Ponta Grossa / PR",
+      "notes": "",
+      "status": "Confirmado",
+      "updatedAt": "2026-04-03T21:50:37.967Z"
+    }
+  ]
+}

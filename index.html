@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobilier - Mobiliário para Eventos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Estilos adicionais para corrigir o layout do CEP */
+        .cep-container {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 25px;
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        
+        .cep-container h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .cep-container h3 i {
+            color: #3498db;
+        }
+        
+        .cep-input-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            align-items: flex-start;
+        }
+        
+        .cep-input {
+            flex: 1;
+            position: relative;
+        }
+        
+        .cep-input input {
+            width: 100%;
+            padding: 14px 20px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+        
+        .cep-input input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        
+        .cep-input input::placeholder {
+            color: #999;
+        }
+        
+        #checkCep {
+            padding: 14px 25px;
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+        
+        #checkCep:hover {
+            background: linear-gradient(135deg, #2980b9 0%, #1c6ea4 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(52, 152, 219, 0.3);
+        }
+        
+        .cep-info {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .cep-info i {
+            color: #3498db;
+        }
+        
+        #cepMessage {
+            margin-top: 15px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: fadeIn 0.5s ease;
+            border-left: 4px solid;
+        }
+        
+        #cepMessage.success {
+            background-color: rgba(46, 204, 113, 0.1);
+            border-left-color: #2ecc71;
+            color: #27ae60;
+        }
+        
+        #cepMessage.error {
+            background-color: rgba(231, 76, 60, 0.1);
+            border-left-color: #e74c3c;
+            color: #c0392b;
+        }
+        
+        #cepMessage.info {
+            background-color: rgba(52, 152, 219, 0.1);
+            border-left-color: #3498db;
+            color: #2980b9;
+        }
+        
+        #cepMessage.warning {
+            background-color: rgba(241, 196, 15, 0.1);
+            border-left-color: #f1c40f;
+            color: #d35400;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .cep-input-group {
+                flex-direction: column;
+            }
+            
+            #checkCep {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+        
+        /* Estilo para o resumo do orçamento */
+        .budget-summary {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
+            margin-top: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        
+        .summary-details {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .summary-row.total {
+            border-bottom: none;
+            border-top: 2px solid #3498db;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-top: 10px;
+            padding-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Container para mensagens do sistema -->
+    <div class="messages-container" id="messagesContainer"></div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <div class="modal-header">
+                <h2>Login</h2>
+                <span class="close-login-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="login-form">
+                    <div class="form-group">
+                        <label for="loginEmail">E-mail</label>
+                        <input type="email" id="loginEmail" placeholder="seu@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Senha</label>
+                        <input type="password" id="loginPassword" placeholder="Digite sua senha">
+                    </div>
+                    <div class="form-actions">
+                        <button id="loginButton" type="button" class="cta-button">Entrar</button>
+                        <button id="registerButton" type="button" class="btn-outline">Cadastrar</button>
+                    </div>
+                    <div class="login-helper-links">
+                        <button id="forgotPasswordButton" type="button">Esqueci minha senha</button>
+                    </div>
+                    <div id="loginMessage" class="form-messages">
+                        <!-- Mensagens de login serão adicionadas aqui -->
+                    </div>
+                    <p class="login-info">
+                        <small>Clientes: cadastre-se para salvar seus orçamentos.<br>
+                        Admin: use as credenciais específicas.</small>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header com Logo -->
+    <header>
+        <div class="container header-container">
+            <!-- Logo com imagem -->
+            <div class="logo">
+                <a href="#home" class="logo-link">
+                    <img src="logo.png" alt="Mobilier - Mobiliário para Eventos" class="logo-img">
+                    <div class="logo-text-container">
+                        <span class="logo-text">Mobilier</span>
+                        <span class="logo-subtext">Mobiliário para Eventos</span>
+                    </div>
+                </a>
+            </div>
+            
+            <!-- Navegação principal -->
+            <div class="main-nav" id="mainNav">
+                <nav>
+                    <ul class="nav-menu">
+                        <li><a href="#home">Início</a></li>
+                        <li><a href="#products">Produtos</a></li>
+                        <li><a href="#budget">Orçamento</a></li>
+                        <li><a href="#ai-assistant">Assistente IA</a></li>
+                        <li><a href="#about">Sobre</a></li>
+                    </ul>
+                </nav>
+                
+                <div class="header-actions">
+                    <div class="user-menu">
+                        <button class="user-menu-btn" id="userMenuBtn">
+                            <i class="fas fa-user"></i>
+                            <span id="userName">Entrar</span>
+                        </button>
+                    </div>
+                    <button class="mobile-menu-btn" id="mobileMenuBtn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h1>Mobiliário para Seu Evento</h1>
+            <p>Especializados em fornecer os melhores móveis para festas, casamentos e eventos corporativos em todo o Paraná e Santa Catarina, com qualidade e compromisso.</p>
+            <a href="#budget" class="cta-button">Solicitar Orçamento</a>
+        </div>
+    </section>
+
+    <section class="trust-strip">
+        <div class="container trust-strip-grid">
+            <div class="trust-card">
+                <strong>Atendimento consultivo</strong>
+                <span>Briefing completo para cada evento e proposta mais precisa.</span>
+            </div>
+            <div class="trust-card">
+                <strong>Operacao organizada</strong>
+                <span>Cadastro, estoque, pedidos e financeiro em um unico fluxo.</span>
+            </div>
+            <div class="trust-card">
+                <strong>Experiencia profissional</strong>
+                <span>Mais clareza para cliente, equipe e acompanhamento do pedido.</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products">
+        <div class="container">
+            <div class="section-title">
+                <h2>Nossos Produtos</h2>
+                <p>Selecione os itens para seu evento e faça um orçamento personalizado</p>
+            </div>
+            
+            <div class="products-grid" id="productsGrid">
+                <!-- Produtos serão carregados via JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Budget Section -->
+    <section id="budget" class="budget-section budget-gated">
+        <div class="container">
+            <div class="section-title">
+                <h2>Monte Seu Orçamento</h2>
+                <p>Adicione os itens desejados e calcule o valor total</p>
+            </div>
+            
+            <div class="budget-container">
+                <div class="budget-form">
+                    <div class="event-brief-card">
+                        <div class="event-brief-header">
+                            <h3><i class="fas fa-calendar-check"></i> Briefing do Evento</h3>
+                            <p>Preencha os dados do evento para gerar um pedido mais completo.</p>
+                        </div>
+                        <div class="event-brief-grid">
+                            <div class="form-group">
+                                <label for="eventType">Tipo de evento</label>
+                                <select id="eventType">
+                                    <option value="">Selecione</option>
+                                    <option value="Casamento">Casamento</option>
+                                    <option value="Corporativo">Corporativo</option>
+                                    <option value="Aniversario">Aniversario</option>
+                                    <option value="Formatura">Formatura</option>
+                                    <option value="Feira">Feira / Exposicao</option>
+                                    <option value="Outro">Outro</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="guestCount">Convidados previstos</label>
+                                <input type="number" id="guestCount" min="1" placeholder="Ex: 120">
+                            </div>
+                            <div class="form-group">
+                                <label for="eventDate">Data do evento</label>
+                                <input type="date" id="eventDate">
+                            </div>
+                            <div class="form-group">
+                                <label for="eventCity">Cidade</label>
+                                <input type="text" id="eventCity" placeholder="Ex: Curitiba">
+                            </div>
+                            <div class="form-group">
+                                <label for="venueType">Ambiente</label>
+                                <select id="venueType">
+                                    <option value="">Selecione</option>
+                                    <option value="Interno">Interno</option>
+                                    <option value="Externo">Externo</option>
+                                    <option value="Misto">Misto</option>
+                                </select>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="eventNotes">Observacoes</label>
+                                <textarea id="eventNotes" rows="3" placeholder="Estilo desejado, horario de montagem, restricoes do local e outras informacoes."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="eventName">Nome da festa / evento</label>
+                                <input type="text" id="eventName" placeholder="Ex: Casamento Ana e Pedro">
+                            </div>
+                            <div class="form-group">
+                                <label for="deliveryDate">Data da entrega</label>
+                                <input type="date" id="deliveryDate">
+                            </div>
+                            <div class="form-group">
+                                <label for="deliveryTime">Horario da entrega</label>
+                                <input type="time" id="deliveryTime">
+                            </div>
+                            <div class="form-group">
+                                <label for="eventResponsible">Responsavel no local</label>
+                                <input type="text" id="eventResponsible" placeholder="Nome de quem vai receber">
+                            </div>
+                            <div class="form-group">
+                                <label for="eventResponsiblePhone">Telefone do responsavel</label>
+                                <input type="text" id="eventResponsiblePhone" placeholder="(00) 00000-0000">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Container do CEP melhorado -->
+                    <div class="cep-container">
+                        <h3><i class="fas fa-truck"></i> Calcular Frete</h3>
+                        <div class="form-group">
+                            <label for="cep" style="font-weight: 600; margin-bottom: 8px; display: block; color: #2c3e50;">CEP de Entrega*</label>
+                            <div class="cep-input-group">
+                                <div class="cep-input">
+                                    <input type="text" id="cep" placeholder="00000-000" maxlength="9">
+                                </div>
+                                <button id="checkCep">
+                                    <i class="fas fa-calculator"></i> Calcular Frete
+                                </button>
+                            </div>
+                            <div class="freight-address-grid">
+                                <div class="form-group freight-street">
+                                    <label for="deliveryStreet">Rua / logradouro*</label>
+                                    <input type="text" id="deliveryStreet" placeholder="Rua, avenida ou alameda">
+                                </div>
+                                <div class="form-group freight-number">
+                                    <label for="deliveryNumber">Numero*</label>
+                                    <input type="text" id="deliveryNumber" placeholder="123">
+                                </div>
+                                <div class="form-group">
+                                    <label for="deliveryComplement">Complemento</label>
+                                    <input type="text" id="deliveryComplement" placeholder="Sala, chacara, referencia">
+                                </div>
+                                <div class="form-group">
+                                    <label for="deliveryNeighborhood">Bairro*</label>
+                                    <input type="text" id="deliveryNeighborhood" placeholder="Bairro">
+                                </div>
+                                <div class="form-group">
+                                    <label for="deliveryCity">Cidade*</label>
+                                    <input type="text" id="deliveryCity" placeholder="Cidade">
+                                </div>
+                                <div class="form-group">
+                                    <label for="deliveryState">Estado*</label>
+                                    <input type="text" id="deliveryState" placeholder="UF">
+                                </div>
+                            </div>
+                            <div class="cep-info">
+                                <i class="fas fa-info-circle"></i>
+                                <span>Apenas para Paraná e Santa Catarina</span>
+                            </div>
+                        </div>
+                        <!-- Mensagem do frete -->
+                        <div id="cepMessage"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label style="font-weight: 600; margin-bottom: 15px; display: block; color: #2c3e50; font-size: 1.1rem;">Selecione mais itens para seu orçamento:</label>
+                        <div class="items-selection" id="itemsSelection">
+                            <!-- Itens serão carregados via JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <div class="budget-summary">
+                        <h3 style="color: #2c3e50; margin-bottom: 20px; font-size: 1.4rem; display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-file-invoice-dollar"></i> Resumo do Orçamento
+                        </h3>
+                        <div class="summary-details">
+                            <div class="summary-row">
+                                <span>Subtotal:</span>
+                                <span id="subtotal">R$ 0,00</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Frete:</span>
+                                <span id="freight">R$ 0,00</span>
+                            </div>
+                            <div class="summary-row total">
+                                <span>Total:</span>
+                                <span id="total">R$ 0,00</span>
+                            </div>
+                        </div>
+                        
+                        <div class="budget-actions" style="display: flex; gap: 15px; margin-top: 25px;">
+                            <button id="saveBudget" class="cta-button" style="flex: 1; padding: 15px; font-size: 1.1rem;">
+                                <i class="fas fa-save"></i> Salvar Orçamento
+                            </button>
+                            <button id="clearBudget" class="btn-outline" style="flex: 1; padding: 15px; font-size: 1.1rem;">
+                                <i class="fas fa-trash-alt"></i> Limpar Tudo
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="budget-cart" style="background: white; padding: 25px; border-radius: 12px; border: 2px solid #e0e0e0; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);">
+                    <h3 style="color: #2c3e50; margin-bottom: 20px; font-size: 1.4rem; display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-shopping-cart"></i> Carrinho de Itens
+                    </h3>
+                    <div class="cart-items" id="cartItems" style="min-height: 200px;">
+                        <p class="empty-cart" style="text-align: center; color: #7f8c8d; padding: 40px 20px;">
+                            <i class="fas fa-shopping-cart" style="font-size: 3rem; margin-bottom: 15px; display: block; color: #bdc3c7;"></i>
+                            Nenhum item adicionado
+                        </p>
+                    </div>
+                    <div class="cart-total" style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-top: 20px; text-align: center;">
+                        <p style="font-size: 1.1rem; font-weight: 600; color: #2c3e50; margin: 0;">
+                            Itens selecionados: <span id="totalItems" style="color: #3498db; font-size: 1.3rem;">0</span>
+                        </p>
+                    </div>
+                    <div class="customer-side-card">
+                        <h4><i class="fas fa-user-circle"></i> Area do cliente</h4>
+                        <p>Salve o briefing, acompanhe status e reaproveite orcamentos anteriores.</p>
+                        <button id="myBudgetsQuickBtn" class="btn-outline">
+                            <i class="fas fa-folder-open"></i> Ver meus orcamentos
+                        </button>
+                        <ul class="customer-side-list">
+                            <li>Historico por cliente</li>
+                            <li>Status do pedido</li>
+                            <li>Briefing salvo no pedido</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Assistant Section -->
+    <section id="ai-assistant" class="ai-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Assistente IA para Eventos</h2>
+                <p>Descreva seu evento e nossa IA irá sugerir os melhores móveis e quantidades</p>
+            </div>
+            
+            <div class="ai-container">
+                <div class="ai-input">
+                    <textarea id="eventDescription" placeholder="Descreva seu evento: tipo de festa, número de convidados, local (interno/externo), estilo desejado, etc..."></textarea>
+                    <button id="aiSuggest" class="cta-button">
+                        <i class="fas fa-robot"></i> Obter Sugestões
+                    </button>
+                </div>
+                
+                <div class="ai-suggestions">
+                    <h3>Sugestões da IA</h3>
+                    <div class="suggestions-content" id="aiSuggestions">
+                        <p class="empty-suggestions">Descreva seu evento acima para receber sugestões personalizadas.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="about-container">
+                <div class="about-content">
+                    <h2>Sobre a Mobilier</h2>
+                    <p>Com mais de uma década de experiência, a Mobilier é referência em mobiliário para eventos no sul do Brasil. Oferecemos produtos de alta qualidade para transformar seu evento em uma experiência memorável.</p>
+                    <p>Atendemos exclusivamente os estados do Paraná e Santa Catarina, garantindo um serviço ágil e personalizado para cada cliente.</p>
+                    
+                    <div class="contact-info">
+                        <h3>Entre em Contato</h3>
+                        <p><i class="fas fa-phone"></i> (41) 99999-9999</p>
+                        <p><i class="fas fa-envelope"></i> contato@mobilier.com.br</p>
+                        <p><i class="fas fa-map-marker-alt"></i> Ponta Grossa - PR</p>
+                        <p><i class="fab fa-instagram"></i> @mobilier_mobiliario</p>
+                    </div>
+                </div>
+                
+                <div class="about-image">
+                    <div class="image-placeholder">
+                        <i class="fas fa-chair"></i>
+                        <p>Imagem representativa do nosso mobiliário</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Admin Panel Modal -->
+    <div id="adminModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Painel Administrativo</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            
+            <div class="modal-body">
+                <div class="admin-tabs">
+                    <button class="admin-tab active" data-tab="inventory">Gerenciar Estoque</button>
+                    <button class="admin-tab" data-tab="budgets">Orçamentos</button>
+                    <button class="admin-tab" data-tab="settings">Configurações</button>
+                </div>
+                
+                <div class="admin-content">
+                    <!-- Inventory Management -->
+                    <div id="inventoryTab" class="admin-tab-content active">
+                        <h3>Estoque de Produtos</h3>
+                        <div class="admin-products-list" id="adminProductsList">
+                            <!-- Produtos admin serão carregados via JavaScript -->
+                        </div>
+                        <button id="addProduct" class="btn-secondary">
+                            <i class="fas fa-plus"></i> Adicionar Produto
+                        </button>
+                    </div>
+                    
+                    <!-- Budgets Management -->
+                    <div id="budgetsTab" class="admin-tab-content">
+                        <h3>Orçamentos Salvos</h3>
+                        <div class="budgets-list" id="budgetsList">
+                            <p class="empty-message">Nenhum orçamento salvo ainda.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Settings -->
+                    <div id="settingsTab" class="admin-tab-content">
+                        <h3>Configurações do Sistema</h3>
+                        <div class="settings-form">
+                            <div class="form-group">
+                                <label for="companyName">Nome da Empresa</label>
+                                <input type="text" id="companyName" value="Mobilier - Mobiliário para Eventos">
+                            </div>
+                            <div class="form-group">
+                                <label for="deliveryStates">Estados para Entrega</label>
+                                <input type="text" id="deliveryStates" value="PR, SC" readonly>
+                            </div>
+                            <button id="saveSettings" class="cta-button">Salvar Configurações</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer com Logo -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <!-- Logo no Footer -->
+                <div class="footer-logo">
+                    <div class="logo-link footer-logo-link">
+                        <img src="logo.png" alt="Mobilier" class="logo-img-footer">
+                        <div class="footer-logo-text">
+                            <h3>Mobilier</h3>
+                            <p>Mobiliário para Eventos</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Links Rápidos</h4>
+                    <ul>
+                        <li><a href="#home">Início</a></li>
+                        <li><a href="#products">Produtos</a></li>
+                        <li><a href="#budget">Orçamento</a></li>
+                        <li><a href="#about">Sobre</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-contact">
+                    <h4>Contato</h4>
+                    <p><i class="fab fa-instagram"></i> @mobilier_mobiliario</p>
+                    <p><i class="fas fa-phone"></i> (41) 99999-9999</p>
+                    <p><i class="fas fa-envelope"></i> contato@mobilier.com.br</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 Mobilier - Mobiliário para Eventos. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+<script src="script.js"></script>
+<script src="overrides.js"></script>
+<script>
+        // Adicione este script no final para garantir que o botão CEP funcione
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Configurando botão CEP...');
+            
+            const checkCepBtn = document.getElementById('checkCep');
+            if (checkCepBtn) {
+                console.log('Botão CEP encontrado!');
+                checkCepBtn.addEventListener('click', function() {
+                    console.log('Botão CEP clicado!');
+                    // Chama a função checkCep do script.js
+                    if (typeof checkCep === 'function') {
+                        checkCep();
+                    } else {
+                        console.error('Função checkCep não encontrada!');
+                        alert('Erro: Função de cálculo de frete não carregada.');
+                    }
+                });
+            } else {
+                console.error('Botão CEP não encontrado!');
+            }
+            
+            // Formatação automática do CEP
+            const cepInput = document.getElementById('cep');
+            if (cepInput) {
+                cepInput.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\D/g, '');
+                    if (value.length > 5) {
+                        value = value.substring(0, 5) + '-' + value.substring(5, 8);
+                    }
+                    e.target.value = value;
+                });
+                
+                // Permite calcular com Enter
+                cepInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        checkCep();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
