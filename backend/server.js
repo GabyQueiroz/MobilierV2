@@ -7,6 +7,7 @@ import { fileURLToPath } from 'node:url';
 import cors from 'cors';
 import express from 'express';
 import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -152,6 +153,38 @@ function createTransporter() {
         connectionTimeout: 10000,
         greetingTimeout: 10000,
         socketTimeout: 15000
+    });
+}
+
+function createResendClient() {
+    const apiKey = String(process.env.RESEND_API_KEY || '').trim();
+    if (!apiKey) return null;
+    return new Resend(apiKey);
+}
+
+async function sendEmailMessage({ to, subject, html, text, from, replyTo }) {
+    const resend = createResendClient();
+    if (resend) {
+        const sender = String(from || process.env.RESEND_FROM || 'Mobilier <onboarding@resend.dev>').trim();
+        await resend.emails.send({
+            from: sender,
+            to,
+            subject,
+            html,
+            text,
+            replyTo
+        });
+        return;
+    }
+
+    const transporter = createTransporter();
+    await transporter.sendMail({
+        from,
+        to,
+        replyTo,
+        subject,
+        text,
+        html: `<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">${html}`
     });
 }
 
@@ -465,16 +498,14 @@ app.post('/api/registration-email', async (request, response) => {
     }
 
     try {
-        const transporter = createTransporter();
         const message = buildRegistrationEmail({ name, email, phone, address, notes });
-
-        await transporter.sendMail({
-            from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
+        await sendEmailMessage({
+            from: process.env.EMAIL_FROM || process.env.RESEND_FROM || process.env.EMAIL_USER,
             to: email,
             replyTo: process.env.EMAIL_REPLY_TO || process.env.EMAIL_USER,
             subject: message.subject,
             text: message.text,
-            html: `<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">${message.html}`
+            html: message.html
         });
 
         response.json({ ok: true });
@@ -508,16 +539,14 @@ app.post('/api/password-reset/request', async (request, response) => {
         await writeAppData(appData);
 
         const resetUrl = `${getPublicBaseUrl(request)}/?resetToken=${encodeURIComponent(token)}&email=${encodeURIComponent(email)}`;
-        const transporter = createTransporter();
         const message = buildPasswordResetEmail({ name: user.name || 'Cliente', resetUrl });
-
-        await transporter.sendMail({
-            from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
+        await sendEmailMessage({
+            from: process.env.EMAIL_FROM || process.env.RESEND_FROM || process.env.EMAIL_USER,
             to: email,
             replyTo: process.env.EMAIL_REPLY_TO || process.env.EMAIL_USER,
             subject: message.subject,
             text: message.text,
-            html: `<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">${message.html}`
+            html: message.html
         });
 
         response.json({ ok: true });
@@ -551,16 +580,14 @@ app.post('/api/admin-user-created-email', async (request, response) => {
         await writeAppData(appData);
 
         const resetUrl = `${getPublicBaseUrl(request)}/?resetToken=${encodeURIComponent(token)}&email=${encodeURIComponent(email)}`;
-        const transporter = createTransporter();
         const message = buildAdminUserCreatedEmail({ name: name || user.name || 'Cliente', resetUrl, email });
-
-        await transporter.sendMail({
-            from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
+        await sendEmailMessage({
+            from: process.env.EMAIL_FROM || process.env.RESEND_FROM || process.env.EMAIL_USER,
             to: email,
             replyTo: process.env.EMAIL_REPLY_TO || process.env.EMAIL_USER,
             subject: message.subject,
             text: message.text,
-            html: `<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">${message.html}`
+            html: message.html
         });
 
         response.json({ ok: true });
@@ -623,16 +650,14 @@ app.post('/api/budget-email', async (request, response) => {
     }
 
     try {
-        const transporter = createTransporter();
         const message = buildBudgetCreatedEmail({ customerName, budgetId, total, eventName, deliveryDate, deliveryTime, address, items });
-
-        await transporter.sendMail({
-            from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
+        await sendEmailMessage({
+            from: process.env.EMAIL_FROM || process.env.RESEND_FROM || process.env.EMAIL_USER,
             to: email,
             replyTo: process.env.EMAIL_REPLY_TO || process.env.EMAIL_USER,
             subject: message.subject,
             text: message.text,
-            html: `<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">${message.html}`
+            html: message.html
         });
 
         response.json({ ok: true });
@@ -651,16 +676,14 @@ app.post('/api/budget-status-email', async (request, response) => {
     }
 
     try {
-        const transporter = createTransporter();
         const message = buildBudgetStatusEmail({ customerName, budgetId, status, total, eventName, cancelReason, suggestedDate, suggestedTime, originalDate, originalTime });
-
-        await transporter.sendMail({
-            from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
+        await sendEmailMessage({
+            from: process.env.EMAIL_FROM || process.env.RESEND_FROM || process.env.EMAIL_USER,
             to: email,
             replyTo: process.env.EMAIL_REPLY_TO || process.env.EMAIL_USER,
             subject: message.subject,
             text: message.text,
-            html: `<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">${message.html}`
+            html: message.html
         });
 
         response.json({ ok: true });
