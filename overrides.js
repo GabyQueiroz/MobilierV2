@@ -501,21 +501,34 @@
         if (loginMessage) loginMessage.textContent = '';
     }
 
-    async function postJson(path, payload) {
-        const response = await fetch(`${getServerBaseUrl()}${path}`, {
+    async function fetchWithTimeout(url, options = {}, timeoutMs = 15000) {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+        try {
+            return await fetch(url, {
+                ...options,
+                signal: controller.signal
+            });
+        } finally {
+            clearTimeout(timeoutId);
+        }
+    }
+
+    async function postJson(path, payload, timeoutMs = 15000) {
+        const response = await fetchWithTimeout(`${getServerBaseUrl()}${path}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
-        });
+        }, timeoutMs);
         return response.ok;
     }
 
-    async function postJsonWithResponse(path, payload) {
-        const response = await fetch(`${getServerBaseUrl()}${path}`, {
+    async function postJsonWithResponse(path, payload, timeoutMs = 15000) {
+        const response = await fetchWithTimeout(`${getServerBaseUrl()}${path}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
-        });
+        }, timeoutMs);
         const data = await response.json().catch(() => ({}));
         if (!response.ok) {
             throw new Error(data?.message || `Falha ao salvar em ${path}.`);
@@ -1971,22 +1984,6 @@ Paragrafo unico. O CONTRATANTE, para garantir o fiel pagamento da multa, reserva
             saveToLocalStorage();
             await persistDataToServer();
 
-            try {
-                await postJson('/api/budget-email', {
-                    email: budget.userEmail,
-                    customerName: budget.userName,
-                    budgetId: budget.id,
-                    total: formatCurrencyBRL(budget.total || 0),
-                    eventName: budget.eventDetails?.eventName || budget.eventDetails?.type || 'Evento',
-                    deliveryDate: budget.eventDetails?.deliveryDate || '',
-                    deliveryTime: budget.eventDetails?.deliveryTime || '',
-                    address: budget.eventDetails?.deliveryAddress || '',
-                    items: budget.items || []
-                });
-            } catch (error) {
-                console.error('Erro ao enviar e-mail do orcamento:', error);
-            }
-
             cart = [];
             clearEventBriefForm();
             resetFreightFields();
@@ -1995,6 +1992,20 @@ Paragrafo unico. O CONTRATANTE, para garantir o fiel pagamento da multa, reserva
             updateBudgetSummary();
             openCustomerArea('budgets');
             showMessage('Orcamento salvo com sucesso. Ele ja esta na sua area e no painel administrativo.', 'success');
+
+            postJson('/api/budget-email', {
+                email: budget.userEmail,
+                customerName: budget.userName,
+                budgetId: budget.id,
+                total: formatCurrencyBRL(budget.total || 0),
+                eventName: budget.eventDetails?.eventName || budget.eventDetails?.type || 'Evento',
+                deliveryDate: budget.eventDetails?.deliveryDate || '',
+                deliveryTime: budget.eventDetails?.deliveryTime || '',
+                address: budget.eventDetails?.deliveryAddress || '',
+                items: budget.items || []
+            }, 10000).catch(error => {
+                console.error('Erro ao enviar e-mail do orcamento:', error);
+            });
         } finally {
             isSavingBudgetNow = false;
             setSaveBudgetButtonState(false);
