@@ -166,7 +166,7 @@ async function sendEmailMessage({ to, subject, html, text, from, replyTo }) {
     const resend = createResendClient();
     if (resend) {
         const sender = String(from || process.env.RESEND_FROM || 'Mobilier <onboarding@resend.dev>').trim();
-        await resend.emails.send({
+        const result = await resend.emails.send({
             from: sender,
             to,
             subject,
@@ -174,6 +174,11 @@ async function sendEmailMessage({ to, subject, html, text, from, replyTo }) {
             text,
             replyTo
         });
+        if (result?.error) {
+            const message = result.error.message || JSON.stringify(result.error);
+            throw new Error(`Resend falhou: ${message}`);
+        }
+        console.log(`E-mail enviado via Resend para ${to}: ${result?.data?.id || 'sem-id'}`);
         return;
     }
 
