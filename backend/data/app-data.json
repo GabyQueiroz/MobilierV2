@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-04-06T23:54:40.716Z",
+  "updatedAt": "2026-04-17T14:35:32.386Z",
   "products": [
     {
       "id": 1,
@@ -12,7 +12,7 @@
         "price": 14
       },
       "image": "fas fa-chair",
-      "category": "Cadeiras",
+      "category": "Cadeira",
       "imageUrl": "/uploads/4cb0680f0f07100b41ff.webp"
     },
     {
@@ -36,7 +36,7 @@
       "stock": 100,
       "bulkDiscount": null,
       "image": "fas fa-couch",
-      "category": "Assentos"
+      "category": "Poltrona"
     },
     {
       "id": 4,
@@ -46,7 +46,7 @@
       "stock": 20,
       "bulkDiscount": null,
       "image": "fas fa-border-none",
-      "category": "Decoração"
+      "category": "Diversos"
     },
     {
       "id": 5,
@@ -59,7 +59,7 @@
         "price": 10.5
       },
       "image": "fas fa-chair",
-      "category": "Cadeiras"
+      "category": "Cadeira"
     },
     {
       "id": 6,
@@ -79,10 +79,10 @@
       "name": "Sofá de Canto",
       "description": "Sofá de canto em tecido resistente, ideal para área de descanso.",
       "price": 350,
-      "stock": 9,
+      "stock": 8,
       "bulkDiscount": null,
       "image": "fas fa-couch",
-      "category": "Assentos"
+      "category": "Poltrona"
     },
     {
       "id": 8,
@@ -92,7 +92,7 @@
       "stock": 15,
       "bulkDiscount": null,
       "image": "fas fa-wine-bottle",
-      "category": "Decoração"
+      "category": "Diversos"
     }
   ],
   "users": [
@@ -117,7 +117,7 @@
       "neighborhood": "Estrela",
       "cityState": "Ponta Grossa / PR",
       "address": "Rua Balduíno Taques, n. 50, Estrela, Ponta Grossa / PR",
-      "password": "gaby2412",
+      "password": "adrimusa24",
       "notes": "",
       "isAdmin": false,
       "createdAt": "2026-04-03T20:36:23.892Z"
@@ -147,6 +147,335 @@
     }
   ],
   "savedBudgets": [
+    {
+      "id": 1776436325859,
+      "userId": null,
+      "userName": "GABRIELLY DE QUEIROZ PEREIRA",
+      "userEmail": "gabriellyp@alunos.utfpr.edu.br",
+      "userPhone": "15988047380",
+      "date": "17/04/2026",
+      "createdAt": "2026-04-17T14:32:05.864Z",
+      "updatedAt": "2026-04-17T14:32:05.864Z",
+      "items": [
+        {
+          "id": 7,
+          "name": "Sofá de Canto",
+          "quantity": 1,
+          "price": 350,
+          "total": 350
+        }
+      ],
+      "subtotal": 350,
+      "freight": 0,
+      "total": 350,
+      "cep": "",
+      "city": "",
+      "state": "",
+      "status": "Pendente",
+      "eventDetails": {
+        "eventName": "",
+        "type": "",
+        "guests": 0,
+        "date": "",
+        "city": "",
+        "venueType": "",
+        "notes": "",
+        "deliveryDate": "",
+        "deliveryTime": "",
+        "responsible": "",
+        "responsiblePhone": "",
+        "deliveryAddress": ""
+      },
+      "notes": "",
+      "inventoryCommitted": false,
+      "origin": "site-user"
+    },
+    {
+      "id": 1776435341780,
+      "userId": null,
+      "userName": "GABRIELLY DE QUEIROZ PEREIRA",
+      "userEmail": "gabriellyp@alunos.utfpr.edu.br",
+      "userPhone": "15988047380",
+      "date": "17/04/2026",
+      "createdAt": "2026-04-17T14:15:41.780Z",
+      "updatedAt": "2026-04-17T14:32:43.072Z",
+      "items": [
+        {
+          "id": 7,
+          "name": "Sofá de Canto",
+          "quantity": 1,
+          "price": 350,
+          "total": 350
+        },
+        {
+          "id": 6,
+          "name": "Mesa Retangular 2m",
+          "quantity": 15,
+          "price": 140,
+          "total": 2100
+        },
+        {
+          "id": 4,
+          "name": "Biombo Decorativo",
+          "quantity": 1,
+          "price": 180,
+          "total": 180
+        }
+      ],
+      "subtotal": 2630,
+      "freight": 20,
+      "total": 2650,
+      "cep": "84040-000",
+      "city": "pg",
+      "state": "PR",
+      "status": "Pendente",
+      "eventDetails": {
+        "type": "Corporativo",
+        "guests": 100,
+        "date": "2027-02-20",
+        "city": "pg",
+        "venueType": "Externo",
+        "notes": "",
+        "eventName": "",
+        "deliveryDate": "",
+        "deliveryTime": "",
+        "responsible": "",
+        "responsiblePhone": "",
+        "deliveryAddress": "Rua Balduíno Taques, 50, apto 12, Estrela, Ponta Grossa / PR"
+      },
+      "notes": "",
+      "inventoryCommitted": false,
+      "origin": "site-user"
+    },
+    {
+      "id": 1776435312980,
+      "userId": null,
+      "userName": "Administrador",
+      "userEmail": "mobiliermobiliario@gmail.com",
+      "userPhone": "",
+      "date": "17/04/2026",
+      "createdAt": "2026-04-17T14:15:12.980Z",
+      "updatedAt": "2026-04-17T14:15:12.980Z",
+      "items": [
+        {
+          "id": 3,
+          "name": "Puff de Couro Sintético",
+          "quantity": 3,
+          "price": 45,
+          "total": 135
+        }
+      ],
+      "subtotal": 135,
+      "freight": 0,
+      "total": 135,
+      "cep": "",
+      "city": "Ponta Grossa",
+      "state": "",
+      "status": "Pendente",
+      "eventDetails": {
+        "type": "Corporativo",
+        "guests": 100,
+        "date": "2026-02-20",
+        "city": "Ponta Grossa",
+        "venueType": "Externo",
+        "notes": "",
+        "eventName": "",
+        "deliveryDate": "",
+        "deliveryTime": "",
+        "responsible": "",
+        "responsiblePhone": "",
+        "deliveryAddress": ""
+      },
+      "notes": "",
+      "inventoryCommitted": false,
+      "origin": "site-user"
+    },
+    {
+      "id": 1776434934542,
+      "userId": null,
+      "userName": "GABRIELLY DE QUEIROZ PEREIRA",
+      "userEmail": "gabriellyp@alunos.utfpr.edu.br",
+      "userPhone": "15988047380",
+      "date": "17/04/2026",
+      "createdAt": "2026-04-17T14:08:54.547Z",
+      "updatedAt": "2026-04-17T14:14:15.719Z",
+      "items": [
+        {
+          "id": 7,
+          "name": "Sofá de Canto",
+          "quantity": 1,
+          "price": 350,
+          "total": 350
+        },
+        {
+          "id": 2,
+          "name": "Mesa Redonda 1,5m",
+          "quantity": 1,
+          "price": 120,
+          "total": 120
+        },
+        {
+          "id": 5,
+          "name": "Cadeira Dobrável Plástico",
+          "quantity": 1,
+          "price": 12,
+          "total": 12
+        }
+      ],
+      "subtotal": 482,
+      "freight": 10,
+      "total": 492,
+      "cep": "84040-000",
+      "city": "Ponta Grossa",
+      "state": "PR",
+      "status": "Pendente",
+      "eventDetails": {
+        "type": "Casamento",
+        "guests": 100,
+        "date": "2026-10-10",
+        "city": "pg",
+        "venueType": "Interno",
+        "notes": "",
+        "eventName": "",
+        "deliveryDate": "",
+        "deliveryTime": "",
+        "responsible": "",
+        "responsiblePhone": "",
+        "deliveryAddress": "Rua Balduíno Taques, 150, apto 12, Estrela, Ponta Grossa / PR"
+      },
+      "notes": "",
+      "inventoryCommitted": false,
+      "origin": "site-user"
+    },
+    {
+      "id": 1776434383171,
+      "userId": null,
+      "userName": "GABRIELLY DE QUEIROZ PEREIRA",
+      "userEmail": "gabriellyp@alunos.utfpr.edu.br",
+      "userPhone": "15988047380",
+      "date": "17/04/2026",
+      "createdAt": "2026-04-17T13:59:43.176Z",
+      "updatedAt": "2026-04-17T14:00:28.664Z",
+      "items": [
+        {
+          "id": 7,
+          "name": "Sofá de Canto",
+          "quantity": 1,
+          "price": 350,
+          "total": 350
+        }
+      ],
+      "subtotal": 350,
+      "freight": 0,
+      "total": 350,
+      "cep": "",
+      "city": "PG",
+      "state": "",
+      "status": "Aprovado",
+      "eventDetails": {
+        "type": "Corporativo",
+        "guests": 100,
+        "date": "2026-10-20",
+        "city": "PG",
+        "venueType": "Externo",
+        "notes": "",
+        "eventName": "",
+        "deliveryDate": "",
+        "deliveryTime": "",
+        "responsible": "",
+        "responsiblePhone": "",
+        "deliveryAddress": ""
+      },
+      "notes": "",
+      "inventoryCommitted": true,
+      "origin": "site-user"
+    },
+    {
+      "id": 1776434193468,
+      "userId": null,
+      "userName": "GABRIELLY DE QUEIROZ PEREIRA",
+      "userEmail": "gabriellyp@alunos.utfpr.edu.br",
+      "userPhone": "15988047380",
+      "date": "17/04/2026",
+      "createdAt": "2026-04-17T13:56:33.471Z",
+      "updatedAt": "2026-04-17T13:56:33.471Z",
+      "items": [
+        {
+          "id": 7,
+          "name": "Sofá de Canto",
+          "quantity": 1,
+          "price": 350,
+          "total": 350
+        }
+      ],
+      "subtotal": 350,
+      "freight": 0,
+      "total": 350,
+      "cep": "",
+      "city": "PG",
+      "state": "",
+      "status": "Pendente",
+      "eventDetails": {
+        "type": "Corporativo",
+        "guests": 100,
+        "date": "2026-10-10",
+        "city": "PG",
+        "venueType": "Interno",
+        "notes": "",
+        "eventName": "",
+        "deliveryDate": "",
+        "deliveryTime": "",
+        "responsible": "",
+        "responsiblePhone": "",
+        "deliveryAddress": ""
+      },
+      "notes": "",
+      "inventoryCommitted": false,
+      "origin": "site-user"
+    },
+    {
+      "id": 1776433653447,
+      "userId": null,
+      "userName": "GABRIELLY DE QUEIROZ PEREIRA",
+      "userEmail": "gabriellyp@alunos.utfpr.edu.br",
+      "userPhone": "15988047380",
+      "date": "17/04/2026",
+      "createdAt": "2026-04-17T13:47:33.452Z",
+      "updatedAt": "2026-04-17T13:47:33.452Z",
+      "items": [
+        {
+          "id": 2,
+          "name": "Mesa Redonda 1,5m",
+          "quantity": 1,
+          "price": 120,
+          "total": 120
+        }
+      ],
+      "subtotal": 120,
+      "freight": 0,
+      "total": 120,
+      "cep": "",
+      "city": "PG",
+      "state": "",
+      "status": "Pendente",
+      "eventDetails": {
+        "type": "Casamento",
+        "guests": 100,
+        "date": "2025-10-10",
+        "city": "PG",
+        "venueType": "Interno",
+        "notes": "",
+        "eventName": "",
+        "deliveryDate": "",
+        "deliveryTime": "",
+        "responsible": "",
+        "responsiblePhone": "",
+        "deliveryAddress": ""
+      },
+      "notes": "",
+      "inventoryCommitted": false,
+      "origin": "site-user"
+    },
     {
       "id": 1775272432139,
       "userId": 2,
@@ -312,6 +641,16 @@
   },
   "stockMovements": [
     {
+      "id": 1776434429199,
+      "productId": 7,
+      "productName": "Sofá de Canto",
+      "type": "saida",
+      "quantity": 1,
+      "reason": "Reserva do orcamento #1776434383171",
+      "date": "2026-04-17T14:00:28.664Z",
+      "resultingStock": 8
+    },
+    {
       "id": 1775274710007,
       "productId": 5,
       "productName": "Cadeira Dobrável Plástico",
@@ -434,6 +773,90 @@
   ],
   "financialEntries": [
     {
+      "id": 1776436326730,
+      "budgetId": 1776436325859,
+      "customerName": "GABRIELLY DE QUEIROZ PEREIRA",
+      "description": "Evento - Orcamento #1776436325859",
+      "amount": 350,
+      "kind": "Receita",
+      "category": "Locacao de mobiliario",
+      "dueDate": "2026-04-17T14:32:05.864Z",
+      "status": "Previsto",
+      "createdAt": "2026-04-17T14:32:05.864Z"
+    },
+    {
+      "id": 1776435342169,
+      "budgetId": 1776435341780,
+      "customerName": "GABRIELLY DE QUEIROZ PEREIRA",
+      "description": "Corporativo - Orcamento #1776435341780",
+      "amount": 2650,
+      "kind": "Receita",
+      "category": "Locacao de mobiliario",
+      "dueDate": "2027-02-20",
+      "status": "Previsto",
+      "createdAt": "2026-04-17T14:15:41.780Z"
+    },
+    {
+      "id": 1776435313718,
+      "budgetId": 1776435312980,
+      "customerName": "Administrador",
+      "description": "Corporativo - Orcamento #1776435312980",
+      "amount": 135,
+      "kind": "Receita",
+      "category": "Locacao de mobiliario",
+      "dueDate": "2026-02-20",
+      "status": "Previsto",
+      "createdAt": "2026-04-17T14:15:12.980Z"
+    },
+    {
+      "id": 1776434935469,
+      "budgetId": 1776434934542,
+      "customerName": "GABRIELLY DE QUEIROZ PEREIRA",
+      "description": "Casamento - Orcamento #1776434934542",
+      "amount": 492,
+      "kind": "Receita",
+      "category": "Locacao de mobiliario",
+      "dueDate": "2026-10-10",
+      "status": "Previsto",
+      "createdAt": "2026-04-17T14:08:54.547Z"
+    },
+    {
+      "id": 1776434383900,
+      "budgetId": 1776434383171,
+      "customerName": "GABRIELLY DE QUEIROZ PEREIRA",
+      "description": "Corporativo - Orcamento #1776434383171",
+      "amount": 350,
+      "kind": "Receita",
+      "category": "Locacao de mobiliario",
+      "dueDate": "2026-10-20",
+      "status": "A receber",
+      "createdAt": "2026-04-17T13:59:43.176Z"
+    },
+    {
+      "id": 1776434194438,
+      "budgetId": 1776434193468,
+      "customerName": "GABRIELLY DE QUEIROZ PEREIRA",
+      "description": "Corporativo - Orcamento #1776434193468",
+      "amount": 350,
+      "kind": "Receita",
+      "category": "Locacao de mobiliario",
+      "dueDate": "2026-10-10",
+      "status": "Previsto",
+      "createdAt": "2026-04-17T13:56:33.471Z"
+    },
+    {
+      "id": 1776433653973,
+      "budgetId": 1776433653447,
+      "customerName": "GABRIELLY DE QUEIROZ PEREIRA",
+      "description": "Casamento - Orcamento #1776433653447",
+      "amount": 120,
+      "kind": "Receita",
+      "category": "Locacao de mobiliario",
+      "dueDate": "2025-10-10",
+      "status": "Previsto",
+      "createdAt": "2026-04-17T13:47:33.452Z"
+    },
+    {
       "id": 1775272432186,
       "budgetId": 1775272432139,
       "customerName": "GABRIELLY DE QUEIROZ PEREIRA",
@@ -483,6 +906,118 @@
     }
   ],
   "accessHistory": [
+    {
+      "id": 1776435317523,
+      "userId": null,
+      "userName": "GABRIELLY DE QUEIROZ PEREIRA",
+      "startedAt": "2026-04-17T14:15:17.523Z",
+      "lastActivityAt": "2026-04-17T14:16:08.129Z",
+      "productClicks": [],
+      "actions": [
+        {
+          "type": "ui_click",
+          "details": {
+            "text": "Detalhes"
+          },
+          "at": "2026-04-17T14:15:20.456Z"
+        },
+        {
+          "type": "ui_click",
+          "details": {
+            "text": "Adicionar"
+          },
+          "at": "2026-04-17T14:15:21.851Z"
+        },
+        {
+          "type": "lead_unlocked",
+          "details": {
+            "email": "gabriellyp@alunos.utfpr.edu.br",
+            "source": "catalogo"
+          },
+          "at": "2026-04-17T14:15:23.645Z"
+        },
+        {
+          "type": "ui_click",
+          "details": {
+            "text": "Prosseguir"
+          },
+          "at": "2026-04-17T14:15:23.655Z"
+        },
+        {
+          "type": "ui_click",
+          "details": {
+            "text": "Adicionar"
+          },
+          "at": "2026-04-17T14:15:33.737Z"
+        },
+        {
+          "type": "ui_click",
+          "details": {
+            "text": "Adicionar"
+          },
+          "at": "2026-04-17T14:15:34.495Z"
+        },
+        {
+          "type": "ui_click",
+          "details": {
+            "text": "Adicionar"
+          },
+          "at": "2026-04-17T14:15:35.698Z"
+        },
+        {
+          "type": "ui_click",
+          "details": {
+            "text": "Adicionar"
+          },
+          "at": "2026-04-17T14:15:38.705Z"
+        },
+        {
+          "type": "ui_click",
+          "details": {
+            "text": "Adicionar"
+          },
+          "at": "2026-04-17T14:15:40.281Z"
+        },
+        {
+          "type": "ui_click",
+          "details": {
+            "text": "Salvando..."
+          },
+          "at": "2026-04-17T14:15:41.783Z"
+        },
+        {
+          "type": "ui_click",
+          "details": {
+            "text": "Salvando..."
+          },
+          "at": "2026-04-17T14:16:08.129Z"
+        }
+      ],
+      "converted": false,
+      "leadUnlocked": true,
+      "lead": {
+        "name": "GABRIELLY DE QUEIROZ PEREIRA",
+        "email": "gabriellyp@alunos.utfpr.edu.br",
+        "phone": "15988047380",
+        "capturedAt": "2026-04-17T14:15:23.644Z",
+        "context": {
+          "source": "catalogo",
+          "productId": 7,
+          "productName": "Sofá de Canto",
+          "quantity": 1
+        }
+      }
+    },
+    {
+      "id": 1776435317523,
+      "userId": null,
+      "userName": "Visitante",
+      "startedAt": "2026-04-17T14:15:17.523Z",
+      "lastActivityAt": "2026-04-17T14:15:17.523Z",
+      "productClicks": [],
+      "actions": [],
+      "converted": false
+    },
     {
       "id": 1775272940304,
       "userId": null,
@@ -641,7 +1176,118 @@
       "converted": false
     }
   ],
-  "leadContacts": [],
+  "leadContacts": [
+    {
+      "id": 1776436322807,
+      "name": "GABRIELLY DE QUEIROZ PEREIRA",
+      "email": "gabriellyp@alunos.utfpr.edu.br",
+      "phone": "15988047380",
+      "capturedAt": "2026-04-17T14:32:02.807Z",
+      "source": "catalogo",
+      "productName": "Sofá de Canto",
+      "quantity": 1
+    },
+    {
+      "id": 1776435638302,
+      "name": "GABRIELLY DE QUEIROZ PEREIRA",
+      "email": "gabriellyp@alunos.utfpr.edu.br",
+      "phone": "15988047380",
+      "capturedAt": "2026-04-17T14:20:38.302Z",
+      "source": "catalogo",
+      "productName": "Sofá de Canto",
+      "quantity": 1
+    },
+    {
+      "id": 1776435323644,
+      "name": "GABRIELLY DE QUEIROZ PEREIRA",
+      "email": "gabriellyp@alunos.utfpr.edu.br",
+      "phone": "15988047380",
+      "capturedAt": "2026-04-17T14:15:23.644Z",
+      "source": "catalogo",
+      "productName": "Sofá de Canto",
+      "quantity": 1
+    },
+    {
+      "id": 1776434909100,
+      "name": "GABRIELLY DE QUEIROZ PEREIRA",
+      "email": "gabriellyp@alunos.utfpr.edu.br",
+      "phone": "15988047380",
+      "capturedAt": "2026-04-17T14:08:29.100Z",
+      "source": "catalogo",
+      "productName": "Sofá de Canto",
+      "quantity": 1
+    },
+    {
+      "id": 1776434366896,
+      "name": "GABRIELLY DE QUEIROZ PEREIRA",
+      "email": "gabriellyp@alunos.utfpr.edu.br",
+      "phone": "15988047380",
+      "capturedAt": "2026-04-17T13:59:26.896Z",
+      "source": "catalogo",
+      "productName": "Sofá de Canto",
+      "quantity": 1
+    },
+    {
+      "id": 1776434166292,
+      "name": "GABRIELLY DE QUEIROZ PEREIRA",
+      "email": "gabriellyp@alunos.utfpr.edu.br",
+      "phone": "15988047380",
+      "capturedAt": "2026-04-17T13:56:06.292Z",
+      "source": "catalogo",
+      "productName": "Sofá de Canto",
+      "quantity": 1
+    },
+    {
+      "id": 1776433597396,
+      "name": "GABRIELLY DE QUEIROZ PEREIRA",
+      "email": "gabriellyp@alunos.utfpr.edu.br",
+      "phone": "15988047380",
+      "capturedAt": "2026-04-17T13:46:37.396Z",
+      "source": "catalogo",
+      "productName": "Mesa Redonda 1,5m",
+      "quantity": 1
+    },
+    {
+      "id": 1776432820866,
+      "name": "GABRIELLY DE QUEIROZ PEREIRA",
+      "email": "gabriellyp@alunos.utfpr.edu.br",
+      "phone": "15988047380",
+      "capturedAt": "2026-04-17T13:33:40.866Z",
+      "source": "catalogo",
+      "productName": "Biombo Decorativo",
+      "quantity": 1
+    },
+    {
+      "id": 1776432781586,
+      "name": "GABRIELLY DE QUEIROZ PEREIRA",
+      "email": "gabriellyp@alunos.utfpr.edu.br",
+      "phone": "15988047380",
+      "capturedAt": "2026-04-17T13:33:01.586Z",
+      "source": "catalogo",
+      "productName": "Sofá de Canto",
+      "quantity": 1
+    },
+    {
+      "id": 1776431723888,
+      "name": "GABRIELLY DE QUEIROZ PEREIRA",
+      "email": "gabriellyp@alunos.utfpr.edu.br",
+      "phone": "15988047380",
+      "capturedAt": "2026-04-17T13:15:23.888Z",
+      "source": "catalogo",
+      "productName": "Mesa Redonda 1,5m",
+      "quantity": 1
+    },
+    {
+      "id": 1776212877712,
+      "name": "GABRIELLY DE QUEIROZ PEREIRA",
+      "email": "gabriellyp@alunos.utfpr.edu.br",
+      "phone": "15988047380",
+      "capturedAt": "2026-04-15T00:27:57.712Z",
+      "source": "budget_entry",
+      "productName": "",
+      "quantity": 0
+    }
+  ],
   "logisticsEntries": [
     {
       "id": 1775272433011,

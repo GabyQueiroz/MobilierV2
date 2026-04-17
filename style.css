@@ -1323,6 +1323,29 @@ header {
     margin-bottom: 18px;
 }
 
+.customer-side-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin: 18px 0;
+}
+
+.customer-side-actions .cta-button,
+.customer-side-actions .btn-outline {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    padding: 14px 22px;
+    font-size: 1rem;
+}
+
+.customer-side-actions .cta-button {
+    border: 0;
+    box-shadow: 0 14px 28px rgba(212, 175, 55, 0.24);
+}
+
 .customer-side-card .btn-outline {
     width: 100%;
     border-color: rgba(255,255,255,0.45);
@@ -7191,4 +7214,444 @@ textarea:focus {
     #adminPanel .customer-card-stats {
         grid-template-columns: 1fr !important;
     }
+}
+
+.budget-followup-note {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 14px;
+    align-items: start;
+    padding: 18px 20px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, rgba(26, 57, 103, 0.08), rgba(212, 173, 43, 0.1));
+    border: 1px solid rgba(26, 57, 103, 0.12);
+}
+
+.budget-followup-note i {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border-radius: 14px;
+    background: rgba(26, 57, 103, 0.12);
+    color: #1a3967;
+    font-size: 1.05rem;
+}
+
+.budget-followup-note strong {
+    display: block;
+    margin-bottom: 6px;
+    color: #18324f;
+    font-size: 1rem;
+}
+
+.budget-followup-note span {
+    display: block;
+    color: #5d6a7b;
+    line-height: 1.6;
+}
+
+#productsGrid .product-card .product-image {
+    height: 250px !important;
+    padding: 18px !important;
+    background: linear-gradient(180deg, #f9fafc 0%, #eef3f9 100%) !important;
+}
+
+#productsGrid .product-card .product-image::before {
+    opacity: 0.28 !important;
+}
+
+#productsGrid .product-card .hero-product-image {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    object-position: center center !important;
+    display: block !important;
+    position: relative;
+    z-index: 1;
+    filter: drop-shadow(0 14px 18px rgba(27, 50, 81, 0.12));
+}
+
+#productsGrid .product-card .product-image i {
+    font-size: 82px !important;
+}
+
+.budget-final-freight {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) 180px minmax(180px, 0.7fr);
+    gap: 14px;
+    align-items: end;
+    padding: 18px;
+    margin-bottom: 18px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, rgba(26, 57, 103, 0.08), rgba(212, 173, 43, 0.12));
+    border: 1px solid rgba(26, 57, 103, 0.12);
+}
+
+.budget-post-submit-only {
+    display: none !important;
+}
+
+#postBudgetFreightModal .modal {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 10140 !important;
+}
+
+#postBudgetFreightModal .modal-content {
+    position: relative !important;
+    z-index: 10141 !important;
+}
+
+.post-budget-freight-modal {
+    width: min(980px, calc(100vw - 48px)) !important;
+    max-width: min(980px, calc(100vw - 48px)) !important;
+    border-radius: 28px !important;
+    overflow: hidden !important;
+    background: linear-gradient(180deg, #f8fafc 0%, #edf2f7 100%) !important;
+    box-shadow: 0 34px 90px rgba(3, 7, 18, 0.45) !important;
+}
+
+.post-budget-freight-modal .post-freight-header {
+    background: radial-gradient(circle at top left, rgba(212, 173, 43, 0.22), transparent 36%),
+        linear-gradient(135deg, #17304f 0%, #244a78 100%) !important;
+    padding: 30px 34px !important;
+}
+
+.post-budget-freight-modal .post-freight-header h2 {
+    margin: 6px 0 0 !important;
+    color: #fff !important;
+    font-size: clamp(1.8rem, 4vw, 2.5rem) !important;
+}
+
+.post-budget-freight-modal .modal-body {
+    padding: 28px !important;
+    display: grid;
+    gap: 20px;
+}
+
+.post-freight-intro {
+    display: grid;
+    grid-template-columns: 52px minmax(0, 1fr);
+    gap: 16px;
+    align-items: start;
+    padding: 20px;
+    border-radius: 22px;
+    background: #fff;
+    border: 1px solid rgba(26, 57, 103, 0.1);
+    box-shadow: 0 18px 40px rgba(26, 57, 103, 0.08);
+}
+
+.post-freight-intro i {
+    width: 52px;
+    height: 52px;
+    display: grid;
+    place-items: center;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #d4ad2b, #f0d36d);
+    color: #17304f;
+    font-size: 1.2rem;
+}
+
+.post-freight-intro strong {
+    display: block;
+    color: #17304f;
+    margin-bottom: 6px;
+    font-size: 1.08rem;
+}
+
+.post-freight-intro span {
+    color: #667085;
+    line-height: 1.65;
+}
+
+.post-freight-summary {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.post-freight-summary > div {
+    padding: 16px;
+    border-radius: 18px;
+    background: #17304f;
+    color: #fff;
+}
+
+.post-freight-summary span {
+    display: block;
+    margin-bottom: 8px;
+    color: rgba(255,255,255,0.68);
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.post-freight-summary strong {
+    display: block;
+    font-size: 1.25rem;
+}
+
+.post-freight-form-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 16px !important;
+}
+
+.post-freight-form-grid.address {
+    grid-template-columns: minmax(0, 1.4fr) minmax(160px, 0.6fr) !important;
+}
+
+.post-freight-form-grid.compact {
+    grid-template-columns: minmax(170px, 0.8fr) minmax(180px, 0.9fr) minmax(110px, 0.45fr) !important;
+}
+
+.post-budget-freight-modal .settings-form-group {
+    display: grid !important;
+    gap: 8px !important;
+    margin: 0 !important;
+}
+
+.post-budget-freight-modal .settings-form-group label {
+    color: #17304f !important;
+    font-size: 0.82rem !important;
+    font-weight: 900 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.07em !important;
+}
+
+.post-budget-freight-modal input {
+    background: #fff !important;
+    border: 1px solid rgba(26, 57, 103, 0.14) !important;
+    color: #17304f !important;
+    width: 100% !important;
+    min-height: 52px !important;
+    border-radius: 16px !important;
+    padding: 0 16px !important;
+    font-size: 1rem !important;
+    box-shadow: 0 10px 24px rgba(26, 57, 103, 0.06) !important;
+}
+
+.post-budget-freight-modal input:focus {
+    outline: none !important;
+    border-color: rgba(212, 173, 43, 0.85) !important;
+    box-shadow: 0 0 0 4px rgba(212, 173, 43, 0.16) !important;
+}
+
+.post-budget-freight-modal input::placeholder {
+    color: #9aa6b5 !important;
+}
+
+.post-freight-actions {
+    justify-content: flex-end;
+    padding-top: 4px;
+}
+
+.post-freight-actions #savePostBudgetFreight,
+.post-freight-actions .cancel-btn {
+    border-radius: 999px !important;
+    min-height: 50px;
+    padding: 0 24px !important;
+    font-weight: 800;
+}
+
+.post-freight-actions #savePostBudgetFreight {
+    background: linear-gradient(135deg, #d4ad2b, #f0d36d) !important;
+    color: #17304f !important;
+    border: 0 !important;
+}
+
+.post-freight-actions .cancel-btn {
+    background: #fff !important;
+    color: #17304f !important;
+    border: 1px solid rgba(26, 57, 103, 0.18) !important;
+}
+
+#budgetBriefingModal .modal-content {
+    position: relative !important;
+    z-index: 10151 !important;
+}
+
+.budget-briefing-modal {
+    width: min(920px, calc(100vw - 48px)) !important;
+    max-width: min(920px, calc(100vw - 48px)) !important;
+    border-radius: 28px !important;
+    overflow: hidden !important;
+    background: linear-gradient(180deg, #f8fafc 0%, #edf2f7 100%) !important;
+    box-shadow: 0 34px 90px rgba(3, 7, 18, 0.42) !important;
+}
+
+.briefing-modal-header {
+    background: radial-gradient(circle at top left, rgba(212, 173, 43, 0.22), transparent 36%),
+        linear-gradient(135deg, #17304f 0%, #244a78 100%) !important;
+    padding: 30px 34px !important;
+}
+
+.briefing-modal-header h2 {
+    margin: 6px 0 0 !important;
+    color: #fff !important;
+    font-size: clamp(1.8rem, 4vw, 2.45rem) !important;
+}
+
+.budget-briefing-modal .modal-body {
+    padding: 28px !important;
+    display: grid;
+    gap: 20px;
+}
+
+.briefing-modal-intro {
+    display: grid;
+    grid-template-columns: 52px minmax(0, 1fr);
+    gap: 16px;
+    align-items: start;
+    padding: 20px;
+    border-radius: 22px;
+    background: #fff;
+    border: 1px solid rgba(26, 57, 103, 0.1);
+    box-shadow: 0 18px 40px rgba(26, 57, 103, 0.08);
+}
+
+.briefing-modal-intro i {
+    width: 52px;
+    height: 52px;
+    display: grid;
+    place-items: center;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #d4ad2b, #f0d36d);
+    color: #17304f;
+    font-size: 1.2rem;
+}
+
+.briefing-modal-intro strong {
+    display: block;
+    color: #17304f;
+    margin-bottom: 6px;
+    font-size: 1.08rem;
+}
+
+.briefing-modal-intro span {
+    color: #667085;
+    line-height: 1.65;
+}
+
+.briefing-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.briefing-form-grid .full {
+    grid-column: 1 / -1;
+}
+
+.budget-briefing-modal .settings-form-group {
+    display: grid !important;
+    gap: 8px !important;
+    margin: 0 !important;
+}
+
+.budget-briefing-modal .settings-form-group label {
+    color: #17304f !important;
+    font-size: 0.82rem !important;
+    font-weight: 900 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.07em !important;
+}
+
+.budget-briefing-modal input,
+.budget-briefing-modal select,
+.budget-briefing-modal textarea {
+    background: #fff !important;
+    border: 1px solid rgba(26, 57, 103, 0.14) !important;
+    color: #17304f !important;
+    width: 100% !important;
+    min-height: 52px !important;
+    border-radius: 16px !important;
+    padding: 0 16px !important;
+    font-size: 1rem !important;
+    box-shadow: 0 10px 24px rgba(26, 57, 103, 0.06) !important;
+}
+
+.budget-briefing-modal textarea {
+    min-height: 120px !important;
+    padding: 14px 16px !important;
+    resize: vertical;
+}
+
+.budget-briefing-modal input:focus,
+.budget-briefing-modal select:focus,
+.budget-briefing-modal textarea:focus {
+    outline: none !important;
+    border-color: rgba(212, 173, 43, 0.85) !important;
+    box-shadow: 0 0 0 4px rgba(212, 173, 43, 0.16) !important;
+}
+
+.briefing-actions {
+    justify-content: flex-end;
+}
+
+.briefing-actions #saveBudgetBriefing,
+.briefing-actions .cancel-btn {
+    border-radius: 999px !important;
+    min-height: 50px;
+    padding: 0 24px !important;
+    font-weight: 800;
+}
+
+.briefing-actions #saveBudgetBriefing {
+    background: linear-gradient(135deg, #d4ad2b, #f0d36d) !important;
+    color: #17304f !important;
+    border: 0 !important;
+}
+
+.briefing-actions .cancel-btn {
+    background: #fff !important;
+    color: #17304f !important;
+    border: 1px solid rgba(26, 57, 103, 0.18) !important;
+}
+
+@media (max-width: 760px) {
+    .post-freight-summary,
+    .post-freight-form-grid,
+    .post-freight-form-grid.address,
+    .post-freight-form-grid.compact,
+    .briefing-form-grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+.budget-final-freight strong,
+.budget-final-freight label {
+    display: block;
+    color: #18324f;
+    font-weight: 800;
+}
+
+.budget-final-freight span {
+    display: block;
+    margin-top: 5px;
+    color: #667085;
+    line-height: 1.5;
+}
+
+.budget-final-freight input {
+    width: 100%;
+    min-height: 48px;
+    border: 1px solid rgba(26, 57, 103, 0.18);
+    border-radius: 14px;
+    padding: 0 14px;
+    font: inherit;
+    color: #18324f;
+    background: #fff;
+}
+
+@media (max-width: 760px) {
+    .budget-final-freight {
+        grid-template-columns: 1fr;
+    }
+}
+
+#adminPanel .products-table .table-header,
+#adminPanel .products-table .table-row {
+    grid-template-columns: 64px 76px minmax(220px, 1.7fr) minmax(160px, 1fr) 120px 110px minmax(190px, 1.15fr) !important;
 }

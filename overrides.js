@@ -13,6 +13,79 @@
         category: '',
         quantity: ''
     };
+    const PRODUCT_CATEGORIES = ['Aparador', 'Banqueta', 'Bar', 'Cadeira', 'Diversos', 'Espelho', 'Mesas', 'Poltrona', 'Puff', 'Sofá', 'Tapete'];
+
+    function normalizeCategoryValue(category) {
+        const value = String(category || '').trim().toLowerCase();
+        const map = {
+            aparador: 'Aparador',
+            aparadores: 'Aparador',
+            banqueta: 'Banqueta',
+            banquetas: 'Banqueta',
+            bar: 'Bar',
+            bares: 'Bar',
+            cadeira: 'Cadeira',
+            cadeiras: 'Cadeira',
+            diversos: 'Diversos',
+            diverso: 'Diversos',
+            outros: 'Diversos',
+            outro: 'Diversos',
+            espelho: 'Espelho',
+            espelhos: 'Espelho',
+            mesa: 'Mesas',
+            mesas: 'Mesas',
+            poltrona: 'Poltrona',
+            poltronas: 'Poltrona',
+            puff: 'Puff',
+            puffs: 'Puff',
+            sofa: 'Sofá',
+            sofas: 'Sofá',
+            'sofá': 'Sofá',
+            'sofás': 'Sofá',
+            tapete: 'Tapete',
+            tapetes: 'Tapete',
+            assentos: 'Poltrona',
+            decoracao: 'Diversos',
+            'decoração': 'Diversos',
+            iluminacao: 'Diversos',
+            'iluminação': 'Diversos',
+            toalhas: 'Diversos',
+            estruturas: 'Diversos'
+        };
+        return map[value] || 'Diversos';
+    }
+
+    function normalizeProductCategories() {
+        if (!Array.isArray(products)) return;
+        products = products.map(product => ({
+            ...product,
+            category: normalizeCategoryValue(product.category)
+        }));
+    }
+
+    function getSelectedReservationDate() {
+        return String(
+            document.getElementById('deliveryDate')?.value
+            || document.getElementById('eventDate')?.value
+            || ''
+        ).trim();
+    }
+
+    function getReservedBudgetQuantityForDate(productId, reservationDate) {
+        const targetDate = String(reservationDate || '').trim();
+        if (!targetDate) return 0;
+
+        return savedBudgets.reduce((sum, budget) => {
+            if (String(budget.status || '') === 'Cancelado') return sum;
+            if (budget.inventoryCommitted) return sum;
+            const budgetDate = String(budget.eventDetails?.deliveryDate || budget.eventDetails?.date || '').trim();
+            if (!budgetDate || budgetDate !== targetDate) return sum;
+            const quantity = (budget.items || []).reduce((itemSum, item) => {
+                return Number(item.id) === Number(productId) ? itemSum + Number(item.quantity || 0) : itemSum;
+            }, 0);
+            return sum + quantity;
+        }, 0);
+    }
 
     function setPendingBudgetIntent(intent) {
         const normalized = intent && intent.productId ? {
@@ -144,7 +217,23 @@
     function getAvailableProductStock(productId) {
         const product = products.find(item => Number(item.id) === Number(productId));
         if (!product) return 0;
-        return Math.max(0, Number(product.stock || 0) - getCartQuantityForProduct(productId));
+        const selectedDate = getSelectedReservationDate();
+        const reservedForDate = getReservedBudgetQuantityForDate(productId, selectedDate);
+        return Math.max(0, Number(product.stock || 0) - reservedForDate - getCartQuantityForProduct(productId));
+    }
+
+    function hasCompleteLeadIdentity() {
+        const session = ensureAccessSession();
+        const lead = session.lead || {};
+        return Boolean(
+            String(lead.name || session.userName || '').trim()
+            && String(lead.email || '').trim()
+            && String(lead.phone || '').trim()
+        );
+    }
+
+    function canDisplayPublicPrices() {
+        return Boolean(currentUser || hasCompleteLeadIdentity());
     }
 
     function applyPendingBudgetIntent() {
@@ -349,7 +438,7 @@
         button.classList.toggle('is-loading', isLoading);
         button.innerHTML = isLoading
             ? '<i class="fas fa-spinner fa-spin"></i> Salvando...'
-            : '<i class="fas fa-save"></i> Salvar OrÃ§amento';
+            : '<i class="fas fa-paper-plane"></i> Enviar orçamento';
     }
 
     function getBudgetFingerprint(payload) {
@@ -421,7 +510,7 @@
     function resetFreightFields() {
         window.currentFreightResult = null;
         freightValue = 0;
-        ['cep', 'deliveryStreet', 'deliveryNumber', 'deliveryComplement', 'deliveryNeighborhood', 'deliveryCity', 'deliveryState'].forEach(id => {
+        ['cep', 'deliveryStreet', 'deliveryNumber', 'deliveryComplement', 'deliveryNeighborhood', 'deliveryCity', 'deliveryState', 'freightManualValue'].forEach(id => {
             const field = document.getElementById(id);
             if (field) field.value = '';
         });
@@ -588,6 +677,7 @@
         accessHistory = Array.isArray(snapshot.accessHistory) ? snapshot.accessHistory : accessHistory;
         leadContacts = Array.isArray(snapshot.leadContacts) ? snapshot.leadContacts : leadContacts;
         logisticsEntries = Array.isArray(snapshot.logisticsEntries) ? snapshot.logisticsEntries : logisticsEntries;
+        normalizeProductCategories();
         if (typeof normalizeAppData === 'function') normalizeAppData();
     }
 
@@ -690,13 +780,18 @@
     };
     window.__mobilierFinalSaveToLocalStorage = saveToLocalStorage;
 
+    hasUnlockedPrices = function () {
+        return hasCompleteLeadIdentity();
+    };
+    window.hasUnlockedPrices = hasUnlockedPrices;
+
     updateBudgetSummary = function () {
         const subtotalElement = document.getElementById('subtotal');
         const freightElement = document.getElementById('freight');
         const totalElement = document.getElementById('total');
         if (!subtotalElement || !freightElement || !totalElement) return;
 
-        const canShowSummaryValues = Boolean(currentUser || hasUnlockedPrices());
+        const canShowSummaryValues = canDisplayPublicPrices();
         if (!canShowSummaryValues) {
             subtotalElement.textContent = 'Liberar valores';
             freightElement.textContent = 'Preencha seus dados';
@@ -711,6 +806,9 @@
             subtotal += itemPrice * item.quantity;
         });
 
+        const manualFreightField = document.getElementById('freightManualValue');
+        const manualFreight = parseFloat(String(manualFreightField?.value || '0').replace(',', '.'));
+        freightValue = Number.isFinite(manualFreight) && manualFreight >= 0 ? manualFreight : 0;
         const total = subtotal + freightValue;
         subtotalElement.textContent = formatCurrencyBRL(subtotal);
         freightElement.textContent = formatCurrencyBRL(freightValue);
@@ -721,7 +819,7 @@
         const productsGrid = document.getElementById('productsGrid');
         if (!productsGrid) return;
 
-        const canShowPrices = Boolean(currentUser || hasUnlockedPrices());
+        const canShowPrices = false;
         productsGrid.innerHTML = '';
 
         products.forEach(product => {
@@ -791,7 +889,7 @@
         if (!product) return;
 
         const available = getAvailableProductStock(productId);
-        const canShowPrices = Boolean(currentUser || hasUnlockedPrices());
+        const canShowPrices = false;
         const modal = document.createElement('div');
         modal.className = 'modal';
         modal.style.display = 'block';
@@ -807,7 +905,7 @@
                             ${product.imageUrl ? `<img src="${product.imageUrl}" alt="${product.name}" class="hero-product-image">` : `<i class="${product.image || 'fas fa-box'}"></i>`}
                         </div>
                         <div>
-                            <p><strong>Categoria:</strong> ${product.category || 'Outros'}</p>
+                            <p><strong>Categoria:</strong> ${product.category || 'Diversos'}</p>
                             <p><strong>Disponivel agora:</strong> ${available} unidade(s)</p>
                             ${canShowPrices ? `<p><strong>Valor unitario:</strong> ${formatCurrencyBRL(product.price || 0)}</p>` : ''}
                             ${product.bulkDiscount ? `<p><strong>Desconto:</strong> ${product.bulkDiscount.quantity}+ unidades por ${formatCurrencyBRL(product.bulkDiscount.price || 0)} cada</p>` : ''}
@@ -875,7 +973,7 @@
             return;
         }
 
-        if (!hasUnlockedPrices()) {
+        if (!canDisplayPublicPrices()) {
             setPendingBudgetIntent({ productId, quantity: requestedQuantity });
             openLeadCaptureModal({
                 source: 'catalogo',
@@ -897,7 +995,7 @@
         }
 
         const session = ensureAccessSession();
-        if (session.leadUnlocked) {
+        if (session.leadUnlocked && hasCompleteLeadIdentity()) {
             applyPendingBudgetIntent();
             return;
         }
@@ -1012,7 +1110,7 @@
     };
 
     clearEventBriefForm = function () {
-        ['eventType', 'guestCount', 'eventDate', 'eventCity', 'venueType', 'eventNotes', 'eventName', 'deliveryDate', 'deliveryTime', 'eventResponsible', 'eventResponsiblePhone', 'deliveryStreet', 'deliveryNumber', 'deliveryComplement', 'deliveryNeighborhood', 'deliveryCity', 'deliveryState'].forEach(id => {
+        ['eventType', 'guestCount', 'eventDate', 'eventCity', 'venueType', 'eventNotes', 'eventName', 'deliveryDate', 'deliveryTime', 'eventResponsible', 'eventResponsiblePhone', 'cep', 'deliveryStreet', 'deliveryNumber', 'deliveryComplement', 'deliveryNeighborhood', 'deliveryCity', 'deliveryState', 'freightManualValue'].forEach(id => {
             const field = document.getElementById(id);
             if (field) field.value = '';
         });
@@ -1025,15 +1123,14 @@
         const rawCep = cepInput.value.replace(/\D/g, '');
         if (rawCep.length !== 8) {
             window.currentFreightResult = null;
-            freightValue = 0;
-            showCepMessage('Digite um CEP valido com 8 numeros.', 'error');
+            showCepMessage('Digite um CEP valido com 8 numeros para preencher o endereco.', 'error');
             updateBudgetSummary();
             return;
         }
 
         const maskedCep = `${rawCep.slice(0, 5)}-${rawCep.slice(5)}`;
         cepInput.value = maskedCep;
-        showCepMessage('Consultando CEP e disponibilidade de entrega...', 'info');
+        showCepMessage('Buscando endereco pelo CEP...', 'info');
 
         try {
             const response = await fetch(`https://viacep.com.br/ws/${rawCep}/json/`);
@@ -1041,7 +1138,6 @@
 
             if (!response.ok || data?.erro) {
                 window.currentFreightResult = null;
-                freightValue = 0;
                 showCepMessage('CEP nao encontrado. Confira o numero digitado.', 'error');
                 updateBudgetSummary();
                 return;
@@ -1058,39 +1154,218 @@
             if (state) document.getElementById('deliveryState').value = state;
 
             window.currentFreightResult = { cep: maskedCep, city, state, street, neighborhood };
-
-            if (!['PR', 'SC'].includes(state)) {
-                freightValue = 0;
-                showCepMessage(`No momento atendemos entregas apenas em Parana e Santa Catarina. CEP consultado: ${maskedCep}.`, 'error');
-                updateBudgetSummary();
-                return;
-            }
-
-            let subtotal = 0;
-            cart.forEach(item => {
-                let itemPrice = item.price;
-                if (item.bulkDiscount && item.quantity >= item.bulkDiscount.quantity) itemPrice = item.bulkDiscount.price;
-                subtotal += itemPrice * item.quantity;
-            });
-
-            freightValue = subtotal >= 1000 ? 0 : state === 'PR' ? 80 : 90;
-            const freightLabel = freightValue === 0 ? 'Frete cortesia para esse pedido.' : `Frete para ${state}: ${formatCurrencyBRL(freightValue)}.`;
-            showCepMessage(`${freightLabel} Entrega em ${city || 'cidade informada'} com CEP ${maskedCep}.`, 'success');
+            showCepMessage(`Endereco localizado para o CEP ${maskedCep}. Revise os campos e informe o frete manualmente.`, 'success');
             updateBudgetSummary();
         } catch (error) {
             console.error('Erro ao consultar CEP:', error);
             window.currentFreightResult = null;
-            freightValue = 0;
             showCepMessage('Nao foi possivel consultar o CEP agora. Tente novamente em instantes.', 'error');
             updateBudgetSummary();
         }
     };
 
+    window.validateEventDetails = validateEventDetails = function (eventDetails) {
+        const requiredFields = [
+            ['type', 'tipo do evento'],
+            ['date', 'data da festa'],
+            ['city', 'cidade']
+        ];
+
+        const missing = requiredFields
+            .filter(([key]) => !String(eventDetails[key] || '').trim())
+            .map(([, label]) => label);
+
+        return {
+            ok: missing.length === 0,
+            missing
+        };
+    };
+
+    window.openPostBudgetFreightModal = async function (budgetId, options = {}) {
+        const budget = savedBudgets.find(item => Number(item.id) === Number(budgetId));
+        if (!budget) return;
+        const isAdminMode = Boolean(options.adminMode);
+
+        document.getElementById('postBudgetFreightModal')?.remove();
+
+        const wrapper = document.createElement('div');
+        wrapper.id = 'postBudgetFreightModal';
+        wrapper.innerHTML = `
+            <div class="modal" style="display:block; background: rgba(3,7,18,0.78); z-index: 10140;">
+                <div class="modal-content post-budget-freight-modal">
+                    <div class="modal-header post-freight-header">
+                        <div>
+                            <span class="modal-kicker">${isAdminMode ? 'Pedido administrativo' : 'Orçamento enviado'}</span>
+                            <h2>${isAdminMode ? 'Informar endereço e frete' : 'Quer adiantar a entrega?'}</h2>
+                        </div>
+                        <span class="close-modal">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <div class="post-freight-intro">
+                            <i class="fas fa-check"></i>
+                            <div>
+                                <strong>${isAdminMode ? 'Complete os dados operacionais deste pedido.' : 'Recebemos o seu orçamento.'}</strong>
+                                <span>${isAdminMode ? 'Preencha endereço, CEP e frete para manter o pedido, financeiro e atendimento alinhados.' : 'Agora você pode preencher os dados de entrega e o valor do frete, ou deixar para combinarmos isso com você depois.'}</span>
+                            </div>
+                        </div>
+                        <div class="post-freight-summary">
+                            <div>
+                                <span>Orçamento</span>
+                                <strong>#${budget.id}</strong>
+                            </div>
+                            <div>
+                                <span>Itens</span>
+                                <strong>${(budget.items || []).reduce((sum, item) => sum + Number(item.quantity || 0), 0)}</strong>
+                            </div>
+                            <div>
+                                <span>Total parcial</span>
+                                <strong>${formatCurrencyBRL(budget.subtotal || budget.total || 0)}</strong>
+                            </div>
+                        </div>
+                        <div class="post-freight-form-grid compact">
+                            <div class="settings-form-group">
+                                <label for="postFreightCep">CEP</label>
+                                <input type="text" id="postFreightCep" maxlength="9" placeholder="00000-000" value="${budget.cep || ''}">
+                            </div>
+                            <div class="settings-form-group">
+                                <label for="postFreightValue">Valor do frete (R$)</label>
+                                <input type="number" id="postFreightValue" min="0" step="0.01" placeholder="0,00" value="${Number(budget.freight || 0) || ''}">
+                            </div>
+                            <div class="settings-form-group">
+                                <label for="postFreightState">UF</label>
+                                <input type="text" id="postFreightState" maxlength="2" placeholder="PR" value="${budget.state || ''}">
+                            </div>
+                        </div>
+                        <div class="post-freight-form-grid address">
+                            <div class="settings-form-group">
+                                <label for="postFreightStreet">Rua / logradouro</label>
+                                <input type="text" id="postFreightStreet" placeholder="Rua, avenida ou alameda">
+                            </div>
+                            <div class="settings-form-group">
+                                <label for="postFreightNumber">Numero</label>
+                                <input type="text" id="postFreightNumber" placeholder="123">
+                            </div>
+                        </div>
+                        <div class="post-freight-form-grid">
+                            <div class="settings-form-group">
+                                <label for="postFreightComplement">Complemento</label>
+                                <input type="text" id="postFreightComplement" placeholder="Sala, chacara, referencia">
+                            </div>
+                            <div class="settings-form-group">
+                                <label for="postFreightNeighborhood">Bairro</label>
+                                <input type="text" id="postFreightNeighborhood" placeholder="Bairro">
+                            </div>
+                            <div class="settings-form-group">
+                                <label for="postFreightCity">Cidade</label>
+                                <input type="text" id="postFreightCity" placeholder="Cidade" value="${budget.city || budget.eventDetails?.city || ''}">
+                            </div>
+                        </div>
+                        <div id="postFreightFeedback" class="sale-cep-feedback"></div>
+                        <div class="form-actions post-freight-actions">
+                            <button type="button" id="savePostBudgetFreight"><i class="fas fa-save"></i> Salvar entrega e frete</button>
+                            <button type="button" class="cancel-btn">${isAdminMode ? 'Fechar' : 'Combinar depois'}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(wrapper);
+
+        const close = () => wrapper.remove();
+        wrapper.querySelector('.close-modal')?.addEventListener('click', close);
+        wrapper.querySelector('.cancel-btn')?.addEventListener('click', close);
+
+        const cepField = wrapper.querySelector('#postFreightCep');
+        const feedback = wrapper.querySelector('#postFreightFeedback');
+        const setFeedback = (message, type = 'info') => {
+            if (!feedback) return;
+            feedback.className = `sale-cep-feedback is-${type}`;
+            feedback.textContent = message;
+        };
+
+        cepField?.addEventListener('input', event => {
+            let value = event.target.value.replace(/\D/g, '');
+            if (value.length > 5) value = `${value.slice(0, 5)}-${value.slice(5, 8)}`;
+            event.target.value = value;
+        });
+
+        cepField?.addEventListener('blur', async () => {
+            const rawCep = cepField.value.replace(/\D/g, '');
+            if (rawCep.length !== 8) return;
+            setFeedback('Buscando endereco pelo CEP...', 'info');
+            try {
+                const response = await fetch(`https://viacep.com.br/ws/${rawCep}/json/`);
+                const data = await response.json();
+                if (!response.ok || data?.erro) {
+                    setFeedback('CEP nao encontrado. Voce pode preencher o endereco manualmente.', 'error');
+                    return;
+                }
+                wrapper.querySelector('#postFreightStreet').value = data.logradouro || '';
+                wrapper.querySelector('#postFreightNeighborhood').value = data.bairro || '';
+                wrapper.querySelector('#postFreightCity').value = data.localidade || '';
+                wrapper.querySelector('#postFreightState').value = data.uf || '';
+                setFeedback('Endereco preenchido pelo CEP. Complete numero e valor do frete.', 'success');
+            } catch (error) {
+                console.error('Erro ao buscar CEP do frete:', error);
+                setFeedback('Nao foi possivel buscar o CEP agora. Preencha manualmente.', 'error');
+            }
+        });
+
+        wrapper.querySelector('#savePostBudgetFreight')?.addEventListener('click', async function () {
+            const button = this;
+            const freight = parseFloat(String(wrapper.querySelector('#postFreightValue')?.value || '0').replace(',', '.'));
+            const street = wrapper.querySelector('#postFreightStreet')?.value.trim() || '';
+            const number = wrapper.querySelector('#postFreightNumber')?.value.trim() || '';
+            const complement = wrapper.querySelector('#postFreightComplement')?.value.trim() || '';
+            const neighborhood = wrapper.querySelector('#postFreightNeighborhood')?.value.trim() || '';
+            const city = wrapper.querySelector('#postFreightCity')?.value.trim() || '';
+            const state = wrapper.querySelector('#postFreightState')?.value.trim().toUpperCase() || '';
+            const cep = wrapper.querySelector('#postFreightCep')?.value.trim() || '';
+            const deliveryAddress = [
+                [street, number].filter(Boolean).join(', '),
+                complement,
+                neighborhood,
+                [city, state].filter(Boolean).join(' / ')
+            ].filter(Boolean).join(', ');
+
+            button.disabled = true;
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
+
+            try {
+                budget.freight = Number.isFinite(freight) && freight >= 0 ? freight : 0;
+                budget.total = Number(budget.subtotal || 0) + budget.freight;
+                budget.cep = cep;
+                budget.city = city || budget.city || budget.eventDetails?.city || '';
+                budget.state = state || budget.state || '';
+                budget.eventDetails = {
+                    ...(budget.eventDetails || {}),
+                    deliveryAddress: deliveryAddress || budget.eventDetails?.deliveryAddress || ''
+                };
+                budget.updatedAt = new Date().toISOString();
+                syncFinancialEntriesFromBudgets();
+                createLogisticsFromBudget(budget, budget.eventDetails?.responsible || budget.userName || '');
+                saveToLocalStorage();
+                await persistDataToServer();
+                if (currentUser) openCustomerArea('budgets');
+                if (document.getElementById('adminPanel')) refreshAdminViews();
+                showMessage('Dados de entrega e frete salvos no orcamento.', 'success');
+                close();
+            } catch (error) {
+                console.error('Erro ao salvar frete do orcamento:', error);
+                setFeedback('Nao foi possivel salvar agora. Tente novamente.', 'error');
+                button.disabled = false;
+                button.innerHTML = '<i class="fas fa-save"></i> Salvar entrega e frete';
+            }
+        });
+    };
+
     createLogisticsFromBudget = function (budget, responsibleFallback = '') {
         const event = budget.eventDetails || {};
-        const deliveryDate = event.deliveryDate || event.date || '';
+        const deliveryDate = event.deliveryDate || '';
+        const deliveryTime = event.deliveryTime || '';
         const location = event.deliveryAddress || `${event.city || ''} ${budget.cep || ''}`.trim();
-        if (!deliveryDate || !location) return;
+        if (!deliveryDate || !deliveryTime || !location) return;
 
         const statusMap = {
             Pendente: 'Aguardando confirmacao',
@@ -1109,7 +1384,7 @@
             receiverPhone: event.responsiblePhone || budget.userPhone || '',
             owner: event.responsible || responsibleFallback || budget.userName || '',
             date: deliveryDate,
-            time: event.deliveryTime || '09:00',
+            time: deliveryTime,
             location,
             notes: event.notes || '',
             status: statusMap[budget.status] || 'Programado',
@@ -1160,6 +1435,7 @@
                                                 <strong>${formatCurrencyBRL(budget.total)}</strong>
                                                 <div class="order-actions">
                                                     <button class="btn-small customer-view-budget" data-id="${budget.id}">Ver detalhes</button>
+                                                    ${budget.status === 'Aprovado' ? `<button class="btn-small customer-event-briefing" data-id="${budget.id}">Dados do evento</button>` : ''}
                                                     <button class="btn-small action-btn action-delete customer-delete-budget" data-id="${budget.id}">Excluir</button>
                                                 </div>
                                             </div>
@@ -1197,6 +1473,9 @@
         });
         wrapper.querySelectorAll('.customer-view-budget').forEach(button => button.addEventListener('click', function () {
             showBudgetDetails(parseInt(this.dataset.id, 10));
+        }));
+        wrapper.querySelectorAll('.customer-event-briefing').forEach(button => button.addEventListener('click', function () {
+            openBudgetBriefingModal(parseInt(this.dataset.id, 10), { adminMode: false });
         }));
         wrapper.querySelectorAll('.customer-delete-budget').forEach(button => button.addEventListener('click', function () {
             const budgetId = parseInt(this.dataset.id, 10);
@@ -1338,6 +1617,8 @@
                                     </div>
                                     <div class="order-actions">
                                         <button class="action-btn action-edit" onclick="viewBudgetDetailsAdmin(${budget.id})" title="Ver detalhes"><i class="fas fa-eye"></i> Ver</button>
+                                        <button type="button" class="action-btn action-edit" onclick="openBudgetBriefingModal(${budget.id}, { adminMode: true })" title="Dados do evento"><i class="fas fa-clipboard-list"></i> Dados do evento</button>
+                                        <button type="button" class="action-btn action-edit" onclick="openPostBudgetFreightModal(${budget.id}, { adminMode: true })" title="Informar endereço e frete"><i class="fas fa-map-marker-alt"></i> Informar endereço</button>
                                         ${budget.status === 'Pendente' ? `<button class="action-btn action-approve" onclick="updateBudgetStatus(${budget.id}, 'Aprovado')" title="Aprovar"><i class="fas fa-check"></i> Aprovar</button>` : ''}
                                         ${budget.status === 'Aprovado' ? `<button type="button" class="action-btn action-edit" onclick="generateBudgetContractPdf(${budget.id})" title="Gerar contrato"><i class="fas fa-file-pdf"></i> Contrato</button>` : ''}
                                         ${budget.status !== 'Cancelado' ? `<button type="button" class="action-btn action-delete" data-cancel-budget-id="${budget.id}" onclick="openBudgetCancellationModal(${budget.id})" title="Cancelar"><i class="fas fa-ban"></i> Cancelar</button>` : ''}
@@ -1910,13 +2191,12 @@ Paragrafo unico. O CONTRATANTE, para garantir o fiel pagamento da multa, reserva
         }
 
         if (!cart.length) return showMessage('Adicione itens ao orcamento antes de salvar.', 'error');
+        const session = ensureAccessSession();
+        const leadIdentity = session.lead || {};
 
-        const cepInput = document.getElementById('cep');
-        if (!cepInput?.value) return showMessage('Informe um CEP para calcular o frete.', 'error');
-
-        if (!currentUser) {
-            showMessage('Faca login para salvar seu orcamento.', 'error');
-            return openLoginModal();
+        if (!currentUser && !hasCompleteLeadIdentity()) {
+            showMessage('Preencha nome, email e telefone para salvar o orcamento.', 'error');
+            return openLeadCaptureModal({ source: 'budget_save' });
         }
 
         const eventDetails = getEventBriefFromForm();
@@ -1938,22 +2218,24 @@ Paragrafo unico. O CONTRATANTE, para garantir o fiel pagamento da multa, reserva
             return { id: item.id, name: item.name, quantity: item.quantity, price: unitPrice, total };
         });
 
+        freightValue = 0;
+
         const budget = {
             id: Date.now(),
-            userId: currentUser.id,
-            userName: currentUser.name,
-            userEmail: currentUser.email || '',
-            userPhone: currentUser.phone || '',
+            userId: currentUser?.id || null,
+            userName: currentUser?.name || leadIdentity.name || session.userName || 'Cliente',
+            userEmail: currentUser?.email || leadIdentity.email || '',
+            userPhone: currentUser?.phone || leadIdentity.phone || '',
             date: new Date().toLocaleDateString('pt-BR'),
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),
             items,
             subtotal,
-            freight: freightValue,
-            total: subtotal + freightValue,
-            cep: cepInput.value,
-            city: window.currentFreightResult?.city || eventDetails.city || '',
-            state: window.currentFreightResult?.state || document.getElementById('deliveryState')?.value.trim() || '',
+            freight: 0,
+            total: subtotal,
+            cep: '',
+            city: eventDetails.city || '',
+            state: '',
             status: 'Pendente',
             eventDetails,
             notes: eventDetails.notes,
@@ -1990,22 +2272,29 @@ Paragrafo unico. O CONTRATANTE, para garantir o fiel pagamento da multa, reserva
             renderProducts();
             renderBudgetItems();
             updateBudgetSummary();
-            openCustomerArea('budgets');
+            if (currentUser) {
+                openCustomerArea('budgets');
+            } else {
+                unlockBudgetSection(true);
+            }
             showMessage('Orcamento salvo com sucesso. Ele ja esta na sua area e no painel administrativo.', 'success');
+            setTimeout(() => openPostBudgetFreightModal(budget.id), 350);
 
-            postJson('/api/budget-email', {
-                email: budget.userEmail,
-                customerName: budget.userName,
-                budgetId: budget.id,
-                total: formatCurrencyBRL(budget.total || 0),
-                eventName: budget.eventDetails?.eventName || budget.eventDetails?.type || 'Evento',
-                deliveryDate: budget.eventDetails?.deliveryDate || '',
-                deliveryTime: budget.eventDetails?.deliveryTime || '',
-                address: budget.eventDetails?.deliveryAddress || '',
-                items: budget.items || []
-            }, 10000).catch(error => {
-                console.error('Erro ao enviar e-mail do orcamento:', error);
-            });
+            if (budget.userEmail) {
+                postJson('/api/budget-email', {
+                    email: budget.userEmail,
+                    customerName: budget.userName,
+                    budgetId: budget.id,
+                    total: formatCurrencyBRL(budget.total || 0),
+                    eventName: budget.eventDetails?.eventName || budget.eventDetails?.type || 'Evento',
+                    deliveryDate: budget.eventDetails?.deliveryDate || '',
+                    deliveryTime: budget.eventDetails?.deliveryTime || '',
+                    address: budget.eventDetails?.deliveryAddress || '',
+                    items: budget.items || []
+                }, 10000).catch(error => {
+                    console.error('Erro ao enviar e-mail do orcamento:', error);
+                });
+            }
         } finally {
             isSavingBudgetNow = false;
             setSaveBudgetButtonState(false);
@@ -2155,6 +2444,19 @@ Paragrafo unico. O CONTRATANTE, para garantir o fiel pagamento da multa, reserva
         if (originalLogout) {
             originalLogout();
         }
+        currentUser = null;
+        sessionStorage.removeItem('currentUser');
+        sessionStorage.removeItem('pendingBudgetIntent');
+        sessionStorage.removeItem('pendingAISuggestionIntents');
+        window.pendingBudgetIntent = null;
+        window.pendingAISuggestionIntents = [];
+        if (typeof currentAccessSession !== 'undefined') {
+            currentAccessSession = null;
+        }
+        updateUserState();
+        updateBudgetSummary();
+        renderProducts();
+        renderBudgetItems();
     };
 
     window.openBudgetCancellationModal = function (budgetId) {
@@ -2710,7 +3012,7 @@ Paragrafo unico. O CONTRATANTE, para garantir o fiel pagamento da multa, reserva
     };
 
     window.renderAdminProducts = renderAdminProducts = function () {
-        const categories = [...new Set(products.map(product => product.category).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+        const categories = PRODUCT_CATEGORIES.slice();
         const filteredProducts = getFilteredAdminProducts();
         const lowStock = products.filter(item => Number(item.stock || 0) > 0 && Number(item.stock || 0) < 20).length;
         const noStock = products.filter(item => Number(item.stock || 0) === 0).length;
@@ -2773,22 +3075,18 @@ Paragrafo unico. O CONTRATANTE, para garantir o fiel pagamento da multa, reserva
                     <div>Categoria</div>
                     <div>Preco</div>
                     <div>Estoque</div>
-                    <div>Status</div>
                     <div>Acoes</div>
                 </div>
                 ${items.map(product => {
                     const stock = Number(product.stock || 0);
-                    const stockStatus = stock === 0 ? 'status-out' : (stock < 20 ? 'status-low' : 'status-available');
-                    const statusText = stock === 0 ? 'Esgotado' : (stock < 20 ? 'Baixo' : 'Saudavel');
                     return `
                         <div class="table-row" data-product-name="${String(product.name || '').replace(/"/g, '&quot;')}" data-product-category="${String(product.category || '').replace(/"/g, '&quot;')}" data-product-stock="${stock}">
                             <div data-label="ID">${product.id}</div>
                             <div data-label="Midia">${product.imageUrl ? `<img src="${product.imageUrl}" alt="${product.name}" class="product-thumb">` : `<i class="${product.image} product-icon"></i>`}</div>
                             <div data-label="Produto">${product.name}</div>
-                            <div data-label="Categoria">${product.category}</div>
+                                <div data-label="Categoria">${product.category}</div>
                             <div data-label="Preco">${formatCurrencyBRL(product.price)}</div>
                             <div data-label="Estoque">${stock}</div>
-                            <div data-label="Status"><span class="status-badge ${stockStatus}">${statusText}</span></div>
                             <div data-label="Acoes">
                                 <div class="action-buttons">
                                     <button class="action-btn action-edit" onclick="editProduct(${product.id})"><i class="fas fa-edit"></i></button>
@@ -2811,7 +3109,7 @@ Paragrafo unico. O CONTRATANTE, para garantir o fiel pagamento da multa, reserva
         const previousProduct = products[productIndex];
         const previousStock = Number(previousProduct.stock || 0);
         const productName = document.getElementById('editProductName')?.value.trim() || '';
-        const productCategory = document.getElementById('editProductCategory')?.value || 'Outros';
+        const productCategory = normalizeCategoryValue(document.getElementById('editProductCategory')?.value || 'Diversos');
         const rawDescription = document.getElementById('editProductDescription')?.value.trim() || '';
         const productDescription = rawDescription || `Produto ${productName || 'sem descricao'}`;
         const productPrice = parseFloat(document.getElementById('editProductPrice')?.value || '0');
@@ -2889,12 +3187,33 @@ Paragrafo unico. O CONTRATANTE, para garantir o fiel pagamento da multa, reserva
             bulkDiscount: null,
             image: 'fas fa-box',
             imageUrl: '',
-            category: 'Outros'
+            category: 'Diversos'
         });
         saveToLocalStorage();
         refreshAdminViews();
         if (typeof editProduct === 'function') editProduct(nextId);
     };
+
+    function syncProductCategoryOptions(root = document) {
+        root.querySelectorAll('#editProductCategory').forEach(select => {
+            const selectedValue = normalizeCategoryValue(select.value);
+            select.innerHTML = PRODUCT_CATEGORIES
+                .map(category => `<option value="${category}" ${category === selectedValue ? 'selected' : ''}>${category}</option>`)
+                .join('');
+        });
+    }
+
+    document.addEventListener('focusin', function (event) {
+        if (event.target?.id === 'editProductCategory') {
+            syncProductCategoryOptions(document);
+        }
+    });
+
+    document.addEventListener('input', function (event) {
+        if (event.target?.id === 'freightManualValue') {
+            updateBudgetSummary();
+        }
+    });
 
     window.openStockAdjustmentModal = function (productId, movementType) {
         const product = products.find(item => item.id === productId);
@@ -2927,7 +3246,7 @@ Paragrafo unico. O CONTRATANTE, para garantir o fiel pagamento da multa, reserva
                                 <p>${product.description || 'Item do estoque operacional.'}</p>
                                 <div class="stock-adjustment-pills">
                                     <span class="stock-adjustment-pill">Estoque atual: <strong>${currentStock}</strong></span>
-                                    <span class="stock-adjustment-pill">Categoria: <strong>${product.category || 'Outros'}</strong></span>
+                                    <span class="stock-adjustment-pill">Categoria: <strong>${product.category || 'Diversos'}</strong></span>
                                     <span class="stock-adjustment-pill ${isEntry ? 'is-entry' : 'is-exit'}">${isEntry ? 'Entrada' : 'Saida'}</span>
                                 </div>
                             </div>
@@ -3372,7 +3691,7 @@ Paragrafo unico. O CONTRATANTE, para garantir o fiel pagamento da multa, reserva
         document.querySelectorAll('a[href="#budget"]').forEach(link => {
             link.addEventListener('click', function (event) {
                 event.preventDefault();
-                if (currentUser || hasUnlockedPrices()) {
+        if (canDisplayPublicPrices()) {
                     unlockBudgetSection(true);
                     return;
                 }
@@ -4095,5 +4414,202 @@ Paragrafo unico. O CONTRATANTE, para garantir o fiel pagamento da multa, reserva
         }
     };
     globalThis.applyAISuggestions = window.applyAISuggestions;
+
+    function escapeFormValue(value) {
+        return String(value || '')
+            .replace(/&/g, '&amp;')
+            .replace(/"/g, '&quot;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+    }
+
+    function renderDeferredEventBriefCard() {
+        const card = document.querySelector('.event-brief-card');
+        if (!card || card.dataset.deferredBriefing === 'true') return;
+        card.dataset.deferredBriefing = 'true';
+        card.innerHTML = `
+            <div class="event-brief-header">
+                <h3><i class="fas fa-calendar-check"></i> Dados do evento</h3>
+                <p>Primeiro envie sua seleção de produtos. Os detalhes da festa entram depois, quando o orçamento for confirmado.</p>
+            </div>
+            <div class="event-brief-grid event-brief-deferred">
+                <div class="form-group full-width">
+                    <div class="budget-followup-note">
+                        <i class="fas fa-clipboard-check"></i>
+                        <div>
+                            <strong>Você não precisa preencher tudo agora</strong>
+                            <span>Depois da aprovação, nós ou você completamos tipo de evento, convidados, data, cidade, ambiente e observações.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    getEventBriefFromForm = function () {
+        const city = document.getElementById('deliveryCity')?.value.trim() || '';
+        return {
+            eventName: '',
+            type: '',
+            guests: 0,
+            date: '',
+            city,
+            venueType: '',
+            notes: '',
+            deliveryDate: '',
+            deliveryTime: '',
+            responsible: '',
+            responsiblePhone: '',
+            deliveryAddress: ''
+        };
+    };
+    window.getEventBriefFromForm = getEventBriefFromForm;
+
+    window.validateEventDetails = validateEventDetails = function () {
+        return { ok: true, missing: [] };
+    };
+
+    window.openBudgetBriefingModal = async function (budgetId, options = {}) {
+        const budget = savedBudgets.find(item => Number(item.id) === Number(budgetId));
+        if (!budget) return;
+
+        const isAdminMode = Boolean(options.adminMode);
+        if (!isAdminMode && budget.status !== 'Aprovado') {
+            showMessage('Os dados do evento ficam disponiveis depois da aprovacao do orcamento.', 'info');
+            return;
+        }
+
+        const event = budget.eventDetails || {};
+        document.getElementById('budgetBriefingModal')?.remove();
+
+        const wrapper = document.createElement('div');
+        wrapper.id = 'budgetBriefingModal';
+        wrapper.innerHTML = `
+            <div class="modal" style="display:block; background: rgba(3,7,18,0.72); z-index: 10150;">
+                <div class="modal-content budget-briefing-modal">
+                    <div class="modal-header briefing-modal-header">
+                        <div>
+                            <span class="modal-kicker">${isAdminMode ? 'Pedido administrativo' : 'Orçamento aprovado'}</span>
+                            <h2>Dados do evento</h2>
+                        </div>
+                        <span class="close-modal">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <div class="briefing-modal-intro">
+                            <i class="fas fa-glass-cheers"></i>
+                            <div>
+                                <strong>${budget.userName || 'Cliente'} - pedido #${budget.id}</strong>
+                                <span>Complete as informações da festa para deixar atendimento, contrato e entrega mais organizados.</span>
+                            </div>
+                        </div>
+                        <div class="briefing-form-grid">
+                            <div class="settings-form-group">
+                                <label for="briefEventType">Tipo de evento</label>
+                                <select id="briefEventType">
+                                    <option value="">Selecione</option>
+                                    ${['Casamento', 'Corporativo', 'Aniversario', 'Formatura', 'Feira / Exposicao', 'Outro'].map(type => `<option value="${type}" ${event.type === type ? 'selected' : ''}>${type}</option>`).join('')}
+                                </select>
+                            </div>
+                            <div class="settings-form-group">
+                                <label for="briefGuests">Convidados previstos</label>
+                                <input type="number" id="briefGuests" min="1" placeholder="Ex: 120" value="${event.guests || ''}">
+                            </div>
+                            <div class="settings-form-group">
+                                <label for="briefEventDate">Data do evento</label>
+                                <input type="date" id="briefEventDate" value="${event.date || ''}">
+                            </div>
+                            <div class="settings-form-group">
+                                <label for="briefEventCity">Cidade</label>
+                                <input type="text" id="briefEventCity" placeholder="Ex: Curitiba" value="${escapeFormValue(event.city || budget.city || '')}">
+                            </div>
+                            <div class="settings-form-group">
+                                <label for="briefVenueType">Ambiente</label>
+                                <select id="briefVenueType">
+                                    <option value="">Selecione</option>
+                                    ${['Interno', 'Externo', 'Misto'].map(type => `<option value="${type}" ${event.venueType === type ? 'selected' : ''}>${type}</option>`).join('')}
+                                </select>
+                            </div>
+                            <div class="settings-form-group full">
+                                <label for="briefEventNotes">Observações</label>
+                                <textarea id="briefEventNotes" rows="4" placeholder="Estilo desejado, restrições do local, montagem e outras informações.">${escapeFormValue(event.notes || budget.notes || '')}</textarea>
+                            </div>
+                        </div>
+                        <div id="briefingFeedback" class="sale-cep-feedback"></div>
+                        <div class="form-actions briefing-actions">
+                            <button type="button" id="saveBudgetBriefing"><i class="fas fa-save"></i> Salvar dados do evento</button>
+                            <button type="button" class="cancel-btn">Fechar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(wrapper);
+        const close = () => wrapper.remove();
+        wrapper.querySelector('.close-modal')?.addEventListener('click', close);
+        wrapper.querySelector('.cancel-btn')?.addEventListener('click', close);
+        wrapper.addEventListener('click', eventClick => {
+            if (eventClick.target.classList.contains('modal')) close();
+        });
+
+        wrapper.querySelector('#saveBudgetBriefing')?.addEventListener('click', async function () {
+            const feedback = wrapper.querySelector('#briefingFeedback');
+            const setFeedback = (message, type = 'info') => {
+                if (!feedback) return;
+                feedback.className = `sale-cep-feedback ${type}`;
+                feedback.textContent = message;
+            };
+
+            const updatedDetails = {
+                ...(budget.eventDetails || {}),
+                type: wrapper.querySelector('#briefEventType')?.value || '',
+                guests: parseInt(wrapper.querySelector('#briefGuests')?.value || '0', 10) || 0,
+                date: wrapper.querySelector('#briefEventDate')?.value || '',
+                city: wrapper.querySelector('#briefEventCity')?.value.trim() || '',
+                venueType: wrapper.querySelector('#briefVenueType')?.value || '',
+                notes: wrapper.querySelector('#briefEventNotes')?.value.trim() || ''
+            };
+
+            try {
+                budget.eventDetails = updatedDetails;
+                budget.city = updatedDetails.city || budget.city || '';
+                budget.notes = updatedDetails.notes || budget.notes || '';
+                budget.updatedAt = new Date().toISOString();
+                syncFinancialEntriesFromBudgets();
+                saveToLocalStorage();
+                await persistDataToServer();
+                if (document.getElementById('adminPanel')) refreshAdminViews();
+                if (document.getElementById('customerAreaModal') && currentUser && !currentUser.isAdmin) {
+                    openCustomerArea('budgets');
+                }
+                showMessage('Dados do evento salvos com sucesso.', 'success');
+                close();
+            } catch (error) {
+                console.error('Erro ao salvar dados do evento:', error);
+                setFeedback('Não foi possível salvar agora. Tente novamente.', 'error');
+            }
+        });
+    };
+
+    function bindCustomerAccountQuickActions() {
+        const createAccountButton = document.getElementById('createAccountQuickBtn');
+        if (createAccountButton && createAccountButton.dataset.boundAccountQuickAction !== 'true') {
+            createAccountButton.dataset.boundAccountQuickAction = 'true';
+            createAccountButton.addEventListener('click', function () {
+                if (currentUser && !currentUser.isAdmin) {
+                    openCustomerArea('profile');
+                    return;
+                }
+                openRegistrationModal();
+            });
+        }
+    }
+
+    renderDeferredEventBriefCard();
+    bindCustomerAccountQuickActions();
+    document.addEventListener('DOMContentLoaded', function () {
+        renderDeferredEventBriefCard();
+        bindCustomerAccountQuickActions();
+    });
 })();
 

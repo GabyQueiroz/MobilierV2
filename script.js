@@ -2024,7 +2024,7 @@ function addNewProduct() {
         stock: 0,
         bulkDiscount: null,
         image: "fas fa-box",
-        category: "Outros"
+            category: "Diversos"
     };
     
     products.push(newProduct);
@@ -2047,7 +2047,7 @@ function editProduct(productId) {
         'fas fa-chair-office', 'fas fa-desktop', 'fas fa-door-closed', 'fas fa-fan'
     ];
     
-    const categoryOptions = ['Cadeiras', 'Mesas', 'Assentos', 'Decoração', 'Iluminação', 'Toalhas', 'Estruturas', 'Outros'];
+        const categoryOptions = ['Aparador', 'Banqueta', 'Bar', 'Cadeira', 'Diversos', 'Espelho', 'Mesas', 'Poltrona', 'Puff', 'Sofá', 'Tapete'];
     
     const modalHTML = `
         <div class="modal" id="productEditModal" style="display: block; background: rgba(0, 0, 0, 0.9);">
@@ -8443,7 +8443,7 @@ function addNewProduct() {
         bulkDiscount: null,
         image: 'fas fa-box',
         imageUrl: '',
-        category: 'Outros'
+            category: 'Diversos'
     });
     saveToLocalStorage();
     refreshAdminViews();
@@ -8472,7 +8472,7 @@ function editProduct(productId) {
                             <div class="settings-form-group">
                                 <label for="editProductCategory">Categoria</label>
                                 <select id="editProductCategory">
-                                    ${['Cadeiras', 'Mesas', 'Assentos', 'Decoracao', 'Iluminacao', 'Toalhas', 'Estruturas', 'Outros'].map(category =>
+                        ${['Aparador', 'Banqueta', 'Bar', 'Cadeira', 'Diversos', 'Espelho', 'Mesas', 'Poltrona', 'Puff', 'Sofá', 'Tapete'].map(category =>
                                         `<option value="${category}" ${product.category === category ? 'selected' : ''}>${category}</option>`
                                     ).join('')}
                                 </select>
