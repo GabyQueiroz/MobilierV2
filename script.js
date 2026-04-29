@@ -5,8 +5,8 @@
 const companyData = {
     name: "Mobilier - Mobiliário para Eventos",
     instagram: "@mobilier_mobiliario",
-    phone: "(41) 99999-9999",
-    email: "contato@mobilier.com.br",
+    phone: "42 - 999600315",
+    email: "mobiliermobiliario@gmail.com",
     deliveryStates: ["PR", "SC"]
 };
 
